@@ -1,9 +1,30 @@
 :root{
+  /* background colors */
+  --active-light-bg:#E7DDFD;
+  --active-dark-bg:#422677;
 
+  --active-light-text-color:#3616CB;
+  --active-dark-text-color:#fff;
+
+  --btn-color-light:#7C6BF0;
+  --btn-color-dark:#806DF6;
+
+  --primary-color:#806DF6;
+
+  /* Units */
+  --rem-half:0.5rem;
+  --rem-020:0.2rem;
+  --rem-1:1rem;
+  --rem-2:2rem;
+  --rem-3:3rem;
 }
 
 *{
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+}
+
+#root{
+  height: 100vh;
 }
