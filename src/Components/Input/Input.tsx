@@ -5,10 +5,11 @@ export default function Input({
   type,
   leftIcon: LeftIcon,
   placeHolder,
+  containerStyle,
   ...rest
 }: InputProps) {
   return (
-    <div className="input-container">
+    <div className="input-container" style={containerStyle}>
       {LeftIcon}
       <input
         className="input"

@@ -1,9 +1,11 @@
-import type { ReactNode } from "react";
+import type { PointerEvent, ReactNode } from "react";
+import type { TaskStatus } from "../../types/task.type";
 
 export interface NavLinkProps {
   title: string;
   leftIcon: ReactNode;
   count: number;
   isActive: boolean;
-  onClick?: () => void;
+  onClick?: (e:PointerEvent<HTMLButtonElement>) => void;
+  dataStatus:TaskStatus|"All"
 }

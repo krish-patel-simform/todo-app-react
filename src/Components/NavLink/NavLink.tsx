@@ -7,11 +7,13 @@ export default function NavLink({
   count,
   isActive,
   onClick,
+  dataStatus
 }: NavLinkProps) {
   return (
     <button
       className={`nav-link ${isActive ? "active" : ""}`}
       onClick={onClick}
+      data-status={dataStatus}
     >
       {/* Left icon */}
       {LeftIcon}

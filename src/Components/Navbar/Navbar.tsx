@@ -5,18 +5,19 @@ import { CiCircleList } from "react-icons/ci";
 import { IoMdTime } from "react-icons/io";
 import { MdDelete } from "react-icons/md";
 import Button from "../Button/Button";
-import { useMemo, useState } from "react";
-import type { TaskStatus } from "../../types/task.type";
+import { useMemo, type PointerEvent } from "react";
+import type { NavbarProps } from "./navbar.type";
 
-export default function Navbar() {
+export default function Navbar({onNavLinkClick,status}:NavbarProps) {
   const memoRemoveBtnStyle = useMemo(() => {
     return { background: "none", color: "red", fontSize: "1.2rem" };
   }, []);
 
-  const [activeType, setActiveType] = useState<TaskStatus>("All");
-
-  function handleNavlinkClick(newType: TaskStatus) {
-    setActiveType(newType);
+  function handleNavlinkClick(e:PointerEvent<HTMLButtonElement>) {
+    const target = e.target as HTMLElement
+    const newStatus = target.dataset.status
+    if(newStatus === 'All'|| newStatus === 'Pending' || newStatus === 'Completed')
+      onNavLinkClick(newStatus)
   }
 
   return (
@@ -31,30 +32,27 @@ export default function Navbar() {
       <section className="nav-link-container">
         <NavLink
           title="All task"
+          dataStatus="All"
           leftIcon={<CiCircleList size={"1.2rem"} />}
           count={5}
-          isActive={activeType === "All" ? true : false}
-          onClick={() => {
-            handleNavlinkClick("All");
-          }}
+          isActive={status === "All" ? true : false}
+          onClick={handleNavlinkClick}
         />
         <NavLink
           title="Completed"
+          dataStatus="Completed"
           leftIcon={<FaCheckSquare size={"1.2rem"} />}
           count={5}
-          isActive={activeType === "Completed" ? true : false}
-          onClick={() => {
-            handleNavlinkClick("Completed");
-          }}
+          isActive={status === "Completed" ? true : false}
+          onClick={handleNavlinkClick}
         />
         <NavLink
+          dataStatus="Pending"
           title="Pending"
           leftIcon={<IoMdTime size={"1.2rem"} />}
           count={5}
-          isActive={activeType === "Pending" ? true : false}
-          onClick={() => {
-            handleNavlinkClick("Pending");
-          }}
+          isActive={status === "Pending" ? true : false}
+          onClick={handleNavlinkClick}
         />
       </section>
 
