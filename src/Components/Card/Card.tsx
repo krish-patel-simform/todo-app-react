@@ -1,21 +1,11 @@
 import "./card.style.css";
 import "./card.type";
 import Input from "../Input/Input";
-import type { Task } from "../../types/task.type";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { memo, useMemo } from "react";
+import type { CardProps } from "./card.type";
 
-function Card({
-  title,
-  status,
-  onChecked,
-  onEdit,
-  onDelete,
-}: Task &  {
-  onChecked: (...args: unknown[]) => void;
-  onEdit: (...args: unknown[]) => void;
-  onDelete: (...args: unknown[]) => void;
-}) {
+function Card({ task, onChecked, onDelete, onModalOpen }: CardProps & {}) {
   const memoInputContainerStyle = useMemo(() => {
     return { border: "none" };
   }, []);
@@ -24,7 +14,19 @@ function Card({
     return { accentColor: `var(--primary-color)` };
   }, []);
 
-  console.log("Card is re render")
+  console.log("Card is re render");
+
+  function handleEditBtnClick() {
+    onModalOpen(task);
+  }
+
+  function handleDeleteBtnClick() {
+    onDelete(task.id);
+  }
+
+  function handleCheckboxChanged() {
+    onChecked(task);
+  }
 
   return (
     <div className="card-container">
@@ -34,24 +36,27 @@ function Card({
           type="checkbox"
           containerStyle={memoInputContainerStyle}
           style={memoInputStyle}
-          checked={status === "Completed" ? true : false}
-          onChange={onChecked}
+          checked={task.status === "Completed" ? true : false}
+          onChange={handleCheckboxChanged}
         />
-        <p className="">{title}</p>
+        <p className="">{task.title}</p>
       </section>
 
       <section className="card__section">
         <p
-          className={`${status == "Completed" ? "card__actions__status-green" : "card__actions__status-orange"} `}
+          className={`${task.status == "Completed" ? "card__actions__status-green" : "card__actions__status-orange"} `}
         >
-          {status}
+          {task.status}
         </p>
-        <MdEdit color="blue" onClick={onEdit} cursor={'pointer'}/>
-        <MdDelete color="red" onClick={onDelete} cursor={'pointer'}/>
+        <MdEdit color="blue" onClick={handleEditBtnClick} cursor={"pointer"} />
+        <MdDelete
+          color="red"
+          onClick={handleDeleteBtnClick}
+          cursor={"pointer"}
+        />
       </section>
     </div>
   );
 }
 
-
-export default memo(Card)
+export default memo(Card);

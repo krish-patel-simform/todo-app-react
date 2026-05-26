@@ -8,16 +8,26 @@ import Button from "../Button/Button";
 import { useMemo, type PointerEvent } from "react";
 import type { NavbarProps } from "./navbar.type";
 
-export default function Navbar({onNavLinkClick,status}:NavbarProps) {
+export default function Navbar({
+  onNavLinkClick,
+  status,
+  allTaskCount,
+  completedTaskCount,
+  pendingTaskCount,
+}: NavbarProps) {
   const memoRemoveBtnStyle = useMemo(() => {
     return { background: "none", color: "red", fontSize: "1.2rem" };
   }, []);
 
-  function handleNavlinkClick(e:PointerEvent<HTMLButtonElement>) {
-    const target = e.target as HTMLElement
-    const newStatus = target.dataset.status
-    if(newStatus === 'All'|| newStatus === 'Pending' || newStatus === 'Completed')
-      onNavLinkClick(newStatus)
+  function handleNavlinkClick(e: PointerEvent<HTMLButtonElement>) {
+    const target = e.target as HTMLElement;
+    const newStatus = target.dataset.status;
+    if (
+      newStatus === "All" ||
+      newStatus === "Pending" ||
+      newStatus === "Completed"
+    )
+      onNavLinkClick(newStatus);
   }
 
   return (
@@ -34,7 +44,7 @@ export default function Navbar({onNavLinkClick,status}:NavbarProps) {
           title="All task"
           dataStatus="All"
           leftIcon={<CiCircleList size={"1.2rem"} />}
-          count={5}
+          count={allTaskCount}
           isActive={status === "All" ? true : false}
           onClick={handleNavlinkClick}
         />
@@ -42,7 +52,7 @@ export default function Navbar({onNavLinkClick,status}:NavbarProps) {
           title="Completed"
           dataStatus="Completed"
           leftIcon={<FaCheckSquare size={"1.2rem"} />}
-          count={5}
+          count={completedTaskCount}
           isActive={status === "Completed" ? true : false}
           onClick={handleNavlinkClick}
         />
@@ -50,7 +60,7 @@ export default function Navbar({onNavLinkClick,status}:NavbarProps) {
           dataStatus="Pending"
           title="Pending"
           leftIcon={<IoMdTime size={"1.2rem"} />}
-          count={5}
+          count={pendingTaskCount}
           isActive={status === "Pending" ? true : false}
           onClick={handleNavlinkClick}
         />

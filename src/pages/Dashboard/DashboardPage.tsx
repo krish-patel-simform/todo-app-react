@@ -1,13 +1,15 @@
-import { FaPlus } from "react-icons/fa";
-import Button from "../../Components/Button/Button";
-import Input from "../../Components/Input/Input";
 import Navbar from "../../Components/Navbar/Navbar";
 import "./dshboard.style.css";
-import { useEffect, useMemo, useState, type ChangeEvent } from "react";
+import { useCallback, useEffect, useMemo, useReducer, useState } from "react";
 import type { Task, TaskStatus } from "../../types/task.type";
-import Select from "../../Components/Select/Select";
-import { fillDefaultTaskProperty, saveTask } from "../../utils/dashboard.utils";
+import {
+  fillDefaultTaskProperty,
+  saveTask,
+  validate,
+} from "../../utils/dashboard.utils";
 import Card from "../../Components/Card/Card";
+import EditModal from "../../Components/Modal/EditModal";
+import Header from "../../Components/Header/Header";
 
 const defaultdata: Task[] = [
   {
@@ -40,11 +42,75 @@ const defaultdata: Task[] = [
   },
 ];
 
+type AllTaskListState = Task[];
+
+type AllTaskListAction = {
+  type: "insert" | "delete" | "edit" | "changeStatus";
+  payload: unknown;
+};
+
+function allTaskListReducer(
+  prevState: AllTaskListState,
+  action: AllTaskListAction,
+): AllTaskListState {
+  switch (action.type) {
+    case "insert": {
+      console.log("btn clicked");
+      const task = action.payload as Task;
+      const isValid = validate(task);
+      console.log(isValid);
+      if (!isValid) {
+        alert("Enter title or select the priority");
+        return prevState;
+      }
+      const newTask: Task = { ...task, ...fillDefaultTaskProperty() };
+      const newTaskList = [...prevState, newTask];
+      return newTaskList;
+    }
+    case "edit": {
+      const editedTask = action.payload as Task;
+      const updatedTaskIndex = prevState.findIndex(
+        (task) => task.id === editedTask.id,
+      );
+
+      const prefixArray = prevState.slice(0, updatedTaskIndex);
+      const suffixArray = prevState.slice(updatedTaskIndex + 1);
+
+      return [...prefixArray, editedTask, ...suffixArray];
+    }
+    case "delete": {
+      const id = action.payload;
+      return prevState.filter((task) => task.id !== id);
+    }
+    case "changeStatus": {
+      const currentTask = action.payload as Task;
+      const updatedTask: Task = {
+        ...currentTask,
+        status: currentTask.status === "Completed" ? "Pending" : "Completed",
+      };
+
+      const updateTaskIndex = prevState.findIndex(
+        (task) => task.id === currentTask.id,
+      );
+
+      const prefixArray = prevState.slice(0, updateTaskIndex);
+      const sufixArray = prevState.slice(updateTaskIndex + 1);
+
+      return [...prefixArray, updatedTask, ...sufixArray];
+    }
+  }
+}
+
 export default function DashboardPage() {
-  const [allTaskList, setAllTaskList] = useState(defaultdata);
+  const [allTaskList, dispatchAllTaskList] = useReducer(
+    allTaskListReducer,
+    defaultdata,
+  );
   const [selectedStatus, setSelectedStatus] = useState<TaskStatus | "All">(
     "All",
   );
+
+  const [showModal, setShowModal] = useState(false);
   const [task, setTask] = useState<Partial<Task>>({ title: "" });
 
   const filterTaskList = useMemo(() => {
@@ -58,140 +124,81 @@ export default function DashboardPage() {
     }
   }, [allTaskList, selectedStatus]);
 
+  console.log(allTaskList);
+
   useEffect(() => {
+    console.log("task is saved");
     saveTask(allTaskList);
   }, [allTaskList]);
-
-  const memoInputContainerStyle = useMemo(() => {
-    return { flex: 1 };
-  }, []);
-
-  const taskStatus = useMemo(() => {
-    return ["Select Priority", "High", "Medium", "Low"];
-  }, []);
 
   function handleNavLinkChange(status: TaskStatus | "All") {
     setSelectedStatus(status);
   }
 
-  // edit the task
-  function editTask(currentTask: Task) {
+  // edit the task show modal
+  const memoShowModal = useCallback((currentTask: Task) => {
     console.log(currentTask);
     setTask(currentTask);
-  }
+    setShowModal(true);
+  }, []);
 
   // delete the task
-  function deleteTask(id: string) {
-    //update the all task that lead to update the filtertask
-    setAllTaskList(allTaskList.filter((task) => task.id !== id));
-    // const removedTaskList = taskList.filter((_, ind) => ind !== index);
-    // setTaskList(removedTaskList);
+  const memoDeleteTask = useCallback((id: string) => {
+    dispatchAllTaskList({ type: "delete", payload: id });
+  }, []);
+
+  const memoOnCheckboxChecked = useCallback((currentTask: Task) => {
+    dispatchAllTaskList({ type: "changeStatus", payload: currentTask });
+  }, []);
+
+  function handleAddBtnClick(task: Partial<Task>) {
+    dispatchAllTaskList({ type: "insert", payload: task });
   }
 
-  function onCheckboxChecked(currentTask: Task, id: string) {
-    if (currentTask.status === "Completed") currentTask.status = "Pending";
-    else currentTask.status = "Completed";
-
-    const updateTaskIndex = allTaskList.findIndex((task) => task.id === id);
-
-    const prefixArray = allTaskList.slice(0, updateTaskIndex);
-    const sufixArray = allTaskList.slice(updateTaskIndex + 1);
-
-    setAllTaskList([...prefixArray, currentTask, ...sufixArray]);
+  function handleCloseModal() {
+    setShowModal(false);
   }
 
-  function handleAddBtnClick() {
-    console.log("btn clicked");
-    const isValid = validate(task);
-    console.log(isValid);
-    if (!isValid) {
-      alert("Enter title or select the priority");
-      return;
-    }
-    const newTask: Task = { ...task, ...fillDefaultTaskProperty() };
-    const newTaskList = [...allTaskList, newTask];
-    setAllTaskList(newTaskList);
-  }
-
-  function validate(task: Partial<Task>): task is Task {
-    const requiredKeys = ["title", "priority"];
-
-    for (const key of requiredKeys) {
-      const typedKey = key as keyof Task;
-      if (
-        !(typedKey in task) ||
-        task[typedKey] == undefined ||
-        task[typedKey] == "Select Priority"
-      ) {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  function handleChange(e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
-    const { name: key, value } = e.target;
-    console.log(name, value);
-    setTask((prev) => ({
-      ...prev,
-      [key]: value,
-    }));
-    console.log(task);
+  function handleSaveEditedTask(editedTask: Task) {
+    dispatchAllTaskList({ type: "edit", payload: editedTask });
   }
 
   return (
     <div className="dashboard-container">
+      {showModal ? (
+        <EditModal
+          task={task as Required<Task>}
+          onClose={handleCloseModal}
+          onSave={handleSaveEditedTask}
+        />
+      ) : null}
       <section className="dashboard__nav-container">
-        <Navbar onNavLinkClick={handleNavLinkChange} status={selectedStatus} />
+        <Navbar
+          onNavLinkClick={handleNavLinkChange}
+          status={selectedStatus}
+          completedTaskCount={
+            allTaskList.filter((task) => task.status === "Completed").length
+          }
+          pendingTaskCount={
+            allTaskList.filter((task) => task.status === "Pending").length
+          }
+          allTaskCount={allTaskList.length}
+        />
       </section>
 
       <section className="dashboard__task-list-container">
         {/* header */}
-        <article>
-          <h3>All Task</h3>
-        </article>
-
-        <article className="dashboard__task-actions">
-          <Input
-            value={task.title}
-            type="text"
-            name="title"
-            placeHolder="Add new task..."
-            onChange={handleChange}
-            containerStyle={memoInputContainerStyle}
-          />
-
-          <Select
-            value={task.priority ?? "Select Priority"}
-            name="priority"
-            optionsList={taskStatus}
-            onChange={handleChange}
-          />
-
-          <Button
-            title="Add"
-            leftIcon={<FaPlus />}
-            onClick={handleAddBtnClick}
-          />
-        </article>
+        <Header onAdd={handleAddBtnClick} />
 
         <article>
           {/* TaskList Container */}
           {filterTaskList.map((taskData) => (
             <Card
-              id={taskData.id}
+              task={taskData}
               key={taskData.id}
-              title={taskData.title}
-              status={taskData.status}
-              onChecked={() => {
-                onCheckboxChecked(taskData, taskData.id);
-              }}
-              onEdit={() => {
-                editTask(taskData);
-              }}
-              onDelete={() => {
-                deleteTask(taskData.id);
-              }}
+              onChecked={memoOnCheckboxChecked}
+              onDelete={memoDeleteTask}
+              onModalOpen={memoShowModal}
             />
           ))}
         </article>
