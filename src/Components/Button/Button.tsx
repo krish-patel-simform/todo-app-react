@@ -5,10 +5,14 @@ export default function Button({
   title,
   leftIcon: LeftIcon,
   rightIcon: RightIcon,
+  isPrimary,
   ...rest
 }: ButtonProps) {
   return (
-    <button className="btn" {...rest}>
+    <button
+      className={`btn ${isPrimary ? "btn-primary" : "btn-secondary"}`}
+      {...rest}
+    >
       {/* Left Icon */}
       {LeftIcon}
 

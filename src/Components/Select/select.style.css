@@ -1,0 +1,8 @@
+.select-container{
+    border-radius: 5px;
+    /* width: 100%; */
+}
+
+.select{
+    padding: var(--rem-half);
+}

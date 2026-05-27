@@ -1,8 +1,10 @@
 import type { TaskStatus } from "../../types/task.type";
 
+export type NavbarStatus = TaskStatus | "All" | "Notification";
+
 export type NavbarProps = {
-  status: TaskStatus | "All";
-  onNavLinkClick: (newStatus: TaskStatus | "All") => void;
+  status: NavbarStatus;
+  onNavLinkClick: (newStatus: TaskStatus | "All" | "Notification") => void;
   completedTaskCount: number;
   pendingTaskCount: number;
   allTaskCount: number;

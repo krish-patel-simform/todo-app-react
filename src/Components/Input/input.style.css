@@ -4,6 +4,7 @@
     align-items: center;
     border: 1px solid grey;
     padding: var(--rem-020);
+    border-radius: 5px;
 }
 .input{
     flex: 1;

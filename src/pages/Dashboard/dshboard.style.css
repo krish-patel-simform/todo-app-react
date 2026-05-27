@@ -8,7 +8,7 @@
     max-width: 50rem;
     padding: var(--rem-half);
 }
-.dashboard__task-list-container{
+.dashboard__main-container{
     flex: 1;
     padding: var(--rem-2);
     display: flex;

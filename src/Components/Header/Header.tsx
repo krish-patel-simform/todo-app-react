@@ -7,6 +7,7 @@ import type { Task } from "../../types/task.type";
 import type { HeaderProps } from "./header.type";
 
 import "./header.style.css";
+import Modal from "../Modal/Modal";
 
 const taskStatus = ["Select Priority", "High", "Medium", "Low"];
 
@@ -14,6 +15,8 @@ const initTask: Partial<Task> = { title: "" };
 
 export default function Header({ onAdd }: HeaderProps) {
   const [task, setTask] = useState<Partial<Task>>(initTask);
+
+  const [showModal, setShowModal] = useState(false);
 
   function handleChange(e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
     const { name: key, value } = e.target;
@@ -29,12 +32,31 @@ export default function Header({ onAdd }: HeaderProps) {
   }, []);
 
   function handleClick() {
-    onAdd(task);
-    setTask(initTask);
+    // onAdd(task);
+    // setTask(initTask);
+    //open the modal
+    setShowModal(true);
+  }
+
+  function onSave(newTask: Task) {
+    // call the add
+    onAdd(newTask);
+  }
+
+  function onClose() {
+    setShowModal(false);
   }
 
   return (
     <div className="header-container">
+      {showModal ? (
+        <Modal
+          mode="New"
+          header="Create New Task"
+          onClose={onClose}
+          onSave={onSave}
+        />
+      ) : null}
       <article>
         <h3>All Task</h3>
       </article>
@@ -55,7 +77,12 @@ export default function Header({ onAdd }: HeaderProps) {
           onChange={handleChange}
         />
 
-        <Button title="Add" leftIcon={<FaPlus />} onClick={handleClick} />
+        <Button
+          title="Add"
+          leftIcon={<FaPlus />}
+          onClick={handleClick}
+          isPrimary={true}
+        />
       </article>
     </div>
   );

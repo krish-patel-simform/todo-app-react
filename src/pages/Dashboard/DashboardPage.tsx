@@ -1,15 +1,13 @@
 import Navbar from "../../Components/Navbar/Navbar";
 import "./dshboard.style.css";
 import { useCallback, useEffect, useMemo, useReducer, useState } from "react";
-import type { Task, TaskStatus } from "../../types/task.type";
-import {
-  fillDefaultTaskProperty,
-  saveTask,
-  validate,
-} from "../../utils/dashboard.utils";
+import type { Task } from "../../types/task.type";
+import { saveTask } from "../../utils/dashboard.utils";
 import Card from "../../Components/Card/Card";
-import EditModal from "../../Components/Modal/EditModal";
 import Header from "../../Components/Header/Header";
+import Modal from "../../Components/Modal/Modal";
+import type { NavbarStatus } from "../../Components/Navbar/navbar.type";
+import Notification from "../../Components/Notification/Notification";
 
 const defaultdata: Task[] = [
   {
@@ -18,6 +16,8 @@ const defaultdata: Task[] = [
     status: "Completed",
     priority: "Low",
     date: new Date(),
+    category: "Work",
+    deadline: new Date(),
   },
   {
     id: "3",
@@ -25,6 +25,8 @@ const defaultdata: Task[] = [
     status: "Pending",
     priority: "Medium",
     date: new Date(),
+    category: "Work",
+    deadline: new Date(),
   },
   {
     id: "4",
@@ -32,6 +34,8 @@ const defaultdata: Task[] = [
     status: "Completed",
     priority: "High",
     date: new Date(),
+    category: "Work",
+    deadline: new Date(),
   },
   {
     id: "5",
@@ -39,6 +43,8 @@ const defaultdata: Task[] = [
     status: "Pending",
     priority: "High",
     date: new Date(),
+    category: "Work",
+    deadline: new Date(),
   },
 ];
 
@@ -56,14 +62,7 @@ function allTaskListReducer(
   switch (action.type) {
     case "insert": {
       console.log("btn clicked");
-      const task = action.payload as Task;
-      const isValid = validate(task);
-      console.log(isValid);
-      if (!isValid) {
-        alert("Enter title or select the priority");
-        return prevState;
-      }
-      const newTask: Task = { ...task, ...fillDefaultTaskProperty() };
+      const newTask = action.payload as Task;
       const newTaskList = [...prevState, newTask];
       return newTaskList;
     }
@@ -106,9 +105,7 @@ export default function DashboardPage() {
     allTaskListReducer,
     defaultdata,
   );
-  const [selectedStatus, setSelectedStatus] = useState<TaskStatus | "All">(
-    "All",
-  );
+  const [selectedStatus, setSelectedStatus] = useState<NavbarStatus>("All");
 
   const [showModal, setShowModal] = useState(false);
   const [task, setTask] = useState<Partial<Task>>({ title: "" });
@@ -124,14 +121,12 @@ export default function DashboardPage() {
     }
   }, [allTaskList, selectedStatus]);
 
-  console.log(allTaskList);
-
   useEffect(() => {
     console.log("task is saved");
     saveTask(allTaskList);
   }, [allTaskList]);
 
-  function handleNavLinkChange(status: TaskStatus | "All") {
+  function handleNavLinkChange(status: NavbarStatus) {
     setSelectedStatus(status);
   }
 
@@ -166,8 +161,10 @@ export default function DashboardPage() {
   return (
     <div className="dashboard-container">
       {showModal ? (
-        <EditModal
-          task={task as Required<Task>}
+        <Modal
+          mode="Edit"
+          header="Edit Task"
+          defaultTask={task as Required<Task>}
           onClose={handleCloseModal}
           onSave={handleSaveEditedTask}
         />
@@ -186,23 +183,30 @@ export default function DashboardPage() {
         />
       </section>
 
-      <section className="dashboard__task-list-container">
-        {/* header */}
-        <Header onAdd={handleAddBtnClick} />
+      <main className="dashboard__main-container">
+        {selectedStatus === "Notification" ? (
+          <Notification />
+        ) : (
+          <>
+            <Header onAdd={handleAddBtnClick} />
 
-        <article>
-          {/* TaskList Container */}
-          {filterTaskList.map((taskData) => (
-            <Card
-              task={taskData}
-              key={taskData.id}
-              onChecked={memoOnCheckboxChecked}
-              onDelete={memoDeleteTask}
-              onModalOpen={memoShowModal}
-            />
-          ))}
-        </article>
-      </section>
+            <article>
+              {/* TaskList Container */}
+              {filterTaskList.map((taskData) => (
+                <Card
+                  task={taskData}
+                  key={taskData.id}
+                  onChecked={memoOnCheckboxChecked}
+                  onDelete={memoDeleteTask}
+                  onModalOpen={memoShowModal}
+                />
+              ))}
+            </article>
+          </>
+        )}
+
+        {/* header */}
+      </main>
     </div>
   );
 }

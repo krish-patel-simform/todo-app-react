@@ -2,7 +2,7 @@ import NavLink from "../NavLink/NavLink";
 import "./navbar.style.css";
 import { FaCheckSquare } from "react-icons/fa";
 import { CiCircleList } from "react-icons/ci";
-import { IoMdTime } from "react-icons/io";
+import { IoMdTime, IoMdNotificationsOutline } from "react-icons/io";
 import { MdDelete } from "react-icons/md";
 import Button from "../Button/Button";
 import { useMemo, type PointerEvent } from "react";
@@ -25,7 +25,8 @@ export default function Navbar({
     if (
       newStatus === "All" ||
       newStatus === "Pending" ||
-      newStatus === "Completed"
+      newStatus === "Completed" ||
+      newStatus === "Notification"
     )
       onNavLinkClick(newStatus);
   }
@@ -64,10 +65,19 @@ export default function Navbar({
           isActive={status === "Pending" ? true : false}
           onClick={handleNavlinkClick}
         />
+        <NavLink
+          dataStatus="Notification"
+          title="Notification"
+          onClick={handleNavlinkClick}
+          isActive={status === "Notification" ? true : false}
+          count={0}
+          leftIcon={<IoMdNotificationsOutline />}
+        />
       </section>
 
       <section className="navbar__remmove-btn">
         <Button
+          isPrimary={false}
           title="Clear All Tasks"
           leftIcon={<MdDelete color="red" size={"1.2rem"} />}
           style={memoRemoveBtnStyle}

@@ -1,4 +1,5 @@
 import "./App.css";
+import Modal from "./Components/Modal/Modal";
 import DashboardPage from "./pages/Dashboard/DashboardPage";
 
 function App() {
@@ -7,6 +8,7 @@ function App() {
       <DashboardPage />
       {/* <EditModal /> */}
       {/* navbar */}
+      {/* <Modal header="Add New Task" /> */}
 
       {/* task Container */}
       {/* <Button title="Demo" leftIcon={<FaPlus />} />
