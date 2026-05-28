@@ -46,6 +46,7 @@ export default function Header({ onAdd }: HeaderProps) {
   function onClose() {
     setShowModal(false);
   }
+  console.log("HEAD");
 
   return (
     <div className="header-container">

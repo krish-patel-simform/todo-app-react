@@ -2,7 +2,11 @@ import Navbar from "../../Components/Navbar/Navbar";
 import "./dshboard.style.css";
 import { useCallback, useEffect, useMemo, useReducer, useState } from "react";
 import type { Task } from "../../types/task.type";
-import { saveTask } from "../../utils/dashboard.utils";
+import {
+  checkAllTaskForNotification,
+  checkNotificationPermission,
+  saveTask,
+} from "../../utils/dashboard.utils";
 import Card from "../../Components/Card/Card";
 import Header from "../../Components/Header/Header";
 import Modal from "../../Components/Modal/Modal";
@@ -18,6 +22,7 @@ const defaultdata: Task[] = [
     date: new Date(),
     category: "Work",
     deadline: new Date(),
+    isNotificationSentOnDueDate: false,
   },
   {
     id: "3",
@@ -27,6 +32,7 @@ const defaultdata: Task[] = [
     date: new Date(),
     category: "Work",
     deadline: new Date(),
+    isNotificationSentOnDueDate: false,
   },
   {
     id: "4",
@@ -36,6 +42,7 @@ const defaultdata: Task[] = [
     date: new Date(),
     category: "Work",
     deadline: new Date(),
+    isNotificationSentOnDueDate: false,
   },
   {
     id: "5",
@@ -45,6 +52,7 @@ const defaultdata: Task[] = [
     date: new Date(),
     category: "Work",
     deadline: new Date(),
+    isNotificationSentOnDueDate: false,
   },
 ];
 
@@ -63,6 +71,7 @@ function allTaskListReducer(
     case "insert": {
       console.log("btn clicked");
       const newTask = action.payload as Task;
+      console.log(prevState);
       const newTaskList = [...prevState, newTask];
       return newTaskList;
     }
@@ -122,6 +131,12 @@ export default function DashboardPage() {
   }, [allTaskList, selectedStatus]);
 
   useEffect(() => {
+    async function checkNotifyRequestAndSendNotification() {
+      const granted = await checkNotificationPermission();
+      if (!granted) return;
+      checkAllTaskForNotification(allTaskList);
+    }
+    checkNotifyRequestAndSendNotification();
     console.log("task is saved");
     saveTask(allTaskList);
   }, [allTaskList]);
@@ -185,7 +200,7 @@ export default function DashboardPage() {
 
       <main className="dashboard__main-container">
         {selectedStatus === "Notification" ? (
-          <Notification />
+          <Notification allTask={allTaskList} />
         ) : (
           <>
             <Header onAdd={handleAddBtnClick} />
@@ -204,8 +219,6 @@ export default function DashboardPage() {
             </article>
           </>
         )}
-
-        {/* header */}
       </main>
     </div>
   );

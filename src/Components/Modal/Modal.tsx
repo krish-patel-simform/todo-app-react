@@ -49,12 +49,12 @@ export default function Modal({
       alert("Please Fill all thing");
       return;
     }
-
+    const deadline = new Date(deadLineDate.toString());
     let newTask: Task = {
       title: title.toString(),
       priority: priority,
       category: category,
-      deadline: new Date(deadLineDate.toString()),
+      deadline: deadline,
       ...fillDefaultTaskProperty(),
     };
 
@@ -66,6 +66,10 @@ export default function Modal({
         date: defaultTask ? defaultTask.date : new Date(),
         status: status,
         id: defaultTask ? defaultTask.id : "123456",
+        isNotificationSentOnDueDate:
+          defaultTask?.deadline === deadline
+            ? defaultTask.isNotificationSentOnDueDate
+            : false,
       };
 
       // const editedTask: Task = {
@@ -102,6 +106,7 @@ export default function Modal({
               type="text"
               name="title"
               placeHolder="Enter task title"
+              required
             />
           </article>
 
@@ -130,6 +135,7 @@ export default function Modal({
                 min={today}
                 placeHolder="Select date"
                 leftIcon={<FaCalendar />}
+                required
               />
             </div>
             <div>

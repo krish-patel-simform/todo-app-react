@@ -13,9 +13,10 @@ export type TaskCategory =
 export interface Task {
   title: string;
   status: TaskStatus;
-  priority?: TaskPriority;
+  priority: TaskPriority;
   date?: Date;
   id: string;
-  category?: TaskCategory;
+  category: TaskCategory;
   deadline: Date;
+  isNotificationSentOnDueDate: boolean;
 }

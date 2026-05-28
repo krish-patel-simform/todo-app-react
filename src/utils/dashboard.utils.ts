@@ -10,6 +10,7 @@ export function fillDefaultTaskProperty() {
     status: "Pending" as TaskStatus,
     date: new Date(),
     id: nanoid(6),
+    isNotificationSentOnDueDate: false,
   };
 }
 
@@ -37,4 +38,74 @@ export function validate(task: Partial<Task>): task is Task {
     }
   }
   return true;
+}
+
+export function sendNotification(message: string, id: string) {
+  const notification = new window.Notification("Task Deadline", {
+    body: message,
+    silent: false,
+    tag: id,
+  });
+
+  setTimeout(() => {
+    notification.close();
+  }, 2000);
+
+  // notification.
+}
+
+export async function checkNotificationPermission(): Promise<boolean> {
+  console.log("Notification" in window);
+  console.log(window.Notification.permission);
+  if (!("Notification" in window)) {
+    alert("Broswer Does not support notification");
+    return false;
+  } else if (window.Notification.permission === "granted") {
+    return true;
+  } else {
+    console.log("Here request fir notification");
+    return await window.Notification.requestPermission().then((permission) => {
+      console.log(permission);
+      if (permission === "granted") {
+        return true;
+      } else {
+        return false;
+      }
+    });
+  }
+}
+
+export function isTodayIsDue(task: Task) {
+  const today = new Date();
+  return (
+    today.getDate() === task.deadline.getDate() &&
+    today.getMonth() === task.deadline.getMonth() &&
+    today.getFullYear() === task.deadline.getFullYear()
+  );
+}
+
+export function delay(ms: number) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+}
+
+export async function checkAllTaskForNotification(allTask: Task[]) {
+  for (const task of allTask) {
+    console.log(task);
+    console.log(isTodayIsDue(task));
+    if (isTodayIsDue(task) && !task.isNotificationSentOnDueDate) {
+      console.log("Notification send");
+      sendNotification(`Today is deadline for ${task.title}`, task.id);
+      updateTaskSentNotification(task);
+      // if (!notificationSent) break;
+      await delay(3000);
+    }
+  }
+  saveTask(allTask);
+}
+
+function updateTaskSentNotification(task: Task) {
+  console.log("Update task's isNotificationOnDueDate is called");
+  task.isNotificationSentOnDueDate = true;
 }
