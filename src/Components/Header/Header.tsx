@@ -59,7 +59,7 @@ export default function Header({ onAdd, selectedStatus }: HeaderProps) {
       </article>
 
       <article className="header__task-actions">
-        {/* <Input
+        <Input
           value={task.title}
           type="text"
           name="title"
@@ -72,7 +72,7 @@ export default function Header({ onAdd, selectedStatus }: HeaderProps) {
           name="priority"
           optionsList={taskStatus}
           onChange={handleChange}
-        /> */}
+        />
 
         <Button
           title="Add"

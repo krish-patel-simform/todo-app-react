@@ -50,38 +50,29 @@ export default function Modal({
       return;
     }
     const deadline = new Date(deadLineDate.toString());
-    let newTask: Task = {
+    let newTask: Partial<Task> | Task = {
       title: title.toString(),
       priority: priority,
       category: category,
       deadline: deadline,
-      ...fillDefaultTaskProperty(),
     };
 
-    if (mode === "Edit") {
+    if (mode === "Edit" && defaultTask) {
       const status = formData.get("status") as TaskStatus;
-
       newTask = {
         ...newTask,
-        date: defaultTask ? defaultTask.date : new Date(),
+        date: defaultTask.date,
         status: status,
-        id: defaultTask ? defaultTask.id : "123456",
+        id: defaultTask.id,
         isNotificationSentOnDueDate:
           defaultTask?.deadline === deadline
             ? defaultTask.isNotificationSentOnDueDate
             : false,
       };
-
-      // const editedTask: Task = {
-      //   title: title.toString(),
-      //   id: defaultTask ? defaultTask.id : "123456",
-      //   deadline: new Date(deadLineDate.toString()),
-      //   priority: priority,
-      //   category: category,
-      //   status: status,
-      //   date: defaultTask ? defaultTask.date : new Date(),
+    } else if (mode === "New") {
+      newTask = { ...newTask, ...fillDefaultTaskProperty() };
     }
-    onSave(newTask);
+    onSave(newTask as Task);
     onClose();
   }
 
@@ -127,7 +118,7 @@ export default function Modal({
                 type="date"
                 name="deadline"
                 defaultValue={
-                  defaultTask?.date?.toISOString().split("T")[0] ?? ""
+                  defaultTask?.deadline?.toISOString().split("T")[0] ?? ""
                 }
                 onChange={(e) => {
                   console.log(e.target.value);
@@ -135,7 +126,6 @@ export default function Modal({
                 min={today}
                 placeHolder="Select date"
                 leftIcon={<FaCalendar />}
-                required
               />
             </div>
             <div>

@@ -75,7 +75,8 @@ function allTaskListReducer(
 export default function DashboardPage() {
   const [allTaskList, dispatchAllTaskList] = useReducer(
     allTaskListReducer,
-    getStoredTask(),
+    [],
+    getStoredTask,
   );
   const [selectedStatus, setSelectedStatus] = useState<NavbarStatus>("All");
 

@@ -45,7 +45,17 @@ export const defaultdata: Task[] = [
 ];
 
 export function getStoredTask() {
-  return JSON.parse(localStorage.getItem("tasks") || "[]");
+  const jsonData = JSON.parse(
+    localStorage.getItem("tasks") || "[]",
+    (key: string, value: string) => {
+      if (key === "date" || key === "deadline") {
+        return new Date(value);
+      }
+      return value;
+    },
+  );
+  console.log("JSON Date:", jsonData);
+  return jsonData;
 }
 
 export function fillDefaultTaskProperty() {
@@ -120,10 +130,11 @@ export async function checkNotificationPermission(): Promise<boolean> {
 
 export function isTodayIsDue(task: Task) {
   const today = new Date();
+  const deadlineDate = task.deadline;
   return (
-    today.getDate() === task.deadline.getDate() &&
-    today.getMonth() === task.deadline.getMonth() &&
-    today.getFullYear() === task.deadline.getFullYear()
+    today.getDate() === deadlineDate.getDate() &&
+    today.getMonth() === deadlineDate.getMonth() &&
+    today.getFullYear() === deadlineDate.getFullYear()
   );
 }
 
