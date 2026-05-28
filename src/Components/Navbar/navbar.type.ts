@@ -8,4 +8,5 @@ export type NavbarProps = {
   completedTaskCount: number;
   pendingTaskCount: number;
   allTaskCount: number;
+  onDeleteAllTask: () => void;
 };

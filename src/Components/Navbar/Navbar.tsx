@@ -14,6 +14,7 @@ export default function Navbar({
   allTaskCount,
   completedTaskCount,
   pendingTaskCount,
+  onDeleteAllTask,
 }: NavbarProps) {
   const memoRemoveBtnStyle = useMemo(() => {
     return { background: "none", color: "red", fontSize: "1.2rem" };
@@ -30,7 +31,6 @@ export default function Navbar({
     )
       onNavLinkClick(newStatus);
   }
-
   return (
     <div className="navbar-container">
       {/* Header */}
@@ -80,6 +80,7 @@ export default function Navbar({
           isPrimary={false}
           title="Clear All Tasks"
           leftIcon={<MdDelete color="red" size={"1.2rem"} />}
+          onClick={onDeleteAllTask}
           style={memoRemoveBtnStyle}
         />
       </section>

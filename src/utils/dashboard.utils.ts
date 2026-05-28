@@ -1,6 +1,49 @@
 import { nanoid } from "nanoid";
 import type { Task, TaskStatus } from "../types/task.type";
 
+export const defaultdata: Task[] = [
+  {
+    id: "1",
+    title: "Complete Todo App",
+    status: "Completed",
+    priority: "Low",
+    date: new Date(),
+    category: "Work",
+    deadline: new Date(),
+    isNotificationSentOnDueDate: false,
+  },
+  {
+    id: "3",
+    title: "Complete Portfolio website",
+    status: "Pending",
+    priority: "Medium",
+    date: new Date(),
+    category: "Work",
+    deadline: new Date(),
+    isNotificationSentOnDueDate: false,
+  },
+  {
+    id: "4",
+    title: "Complete Color pallate",
+    status: "Completed",
+    priority: "High",
+    date: new Date(),
+    category: "Work",
+    deadline: new Date(),
+    isNotificationSentOnDueDate: false,
+  },
+  {
+    id: "5",
+    title: "Complete some other website",
+    status: "Pending",
+    priority: "High",
+    date: new Date(),
+    category: "Work",
+    deadline: new Date(),
+    isNotificationSentOnDueDate: false,
+  },
+];
+
 export function getStoredTask() {
   return JSON.parse(localStorage.getItem("tasks") || "[]");
 }

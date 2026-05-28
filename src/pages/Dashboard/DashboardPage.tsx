@@ -5,6 +5,8 @@ import type { Task } from "../../types/task.type";
 import {
   checkAllTaskForNotification,
   checkNotificationPermission,
+  deleteAllTask,
+  getStoredTask,
   saveTask,
 } from "../../utils/dashboard.utils";
 import Card from "../../Components/Card/Card";
@@ -13,54 +15,11 @@ import Modal from "../../Components/Modal/Modal";
 import type { NavbarStatus } from "../../Components/Navbar/navbar.type";
 import Notification from "../../Components/Notification/Notification";
 
-const defaultdata: Task[] = [
-  {
-    id: "1",
-    title: "Complete Todo App",
-    status: "Completed",
-    priority: "Low",
-    date: new Date(),
-    category: "Work",
-    deadline: new Date(),
-    isNotificationSentOnDueDate: false,
-  },
-  {
-    id: "3",
-    title: "Complete Portfolio website",
-    status: "Pending",
-    priority: "Medium",
-    date: new Date(),
-    category: "Work",
-    deadline: new Date(),
-    isNotificationSentOnDueDate: false,
-  },
-  {
-    id: "4",
-    title: "Complete Color pallate",
-    status: "Completed",
-    priority: "High",
-    date: new Date(),
-    category: "Work",
-    deadline: new Date(),
-    isNotificationSentOnDueDate: false,
-  },
-  {
-    id: "5",
-    title: "Complete some other website",
-    status: "Pending",
-    priority: "High",
-    date: new Date(),
-    category: "Work",
-    deadline: new Date(),
-    isNotificationSentOnDueDate: false,
-  },
-];
-
 type AllTaskListState = Task[];
 
 type AllTaskListAction = {
-  type: "insert" | "delete" | "edit" | "changeStatus";
-  payload: unknown;
+  type: "insert" | "delete" | "edit" | "changeStatus" | "deleteAll";
+  payload?: unknown;
 };
 
 function allTaskListReducer(
@@ -106,13 +65,17 @@ function allTaskListReducer(
 
       return [...prefixArray, updatedTask, ...sufixArray];
     }
+    case "deleteAll": {
+      deleteAllTask();
+      return [];
+    }
   }
 }
 
 export default function DashboardPage() {
   const [allTaskList, dispatchAllTaskList] = useReducer(
     allTaskListReducer,
-    defaultdata,
+    getStoredTask(),
   );
   const [selectedStatus, setSelectedStatus] = useState<NavbarStatus>("All");
 
@@ -173,6 +136,10 @@ export default function DashboardPage() {
     dispatchAllTaskList({ type: "edit", payload: editedTask });
   }
 
+  function handleDeleteAllTask() {
+    dispatchAllTaskList({ type: "deleteAll" });
+  }
+
   return (
     <div className="dashboard-container">
       {showModal ? (
@@ -195,6 +162,7 @@ export default function DashboardPage() {
             allTaskList.filter((task) => task.status === "Pending").length
           }
           allTaskCount={allTaskList.length}
+          onDeleteAllTask={handleDeleteAllTask}
         />
       </section>
 
@@ -203,7 +171,7 @@ export default function DashboardPage() {
           <Notification allTask={allTaskList} />
         ) : (
           <>
-            <Header onAdd={handleAddBtnClick} />
+            <Header onAdd={handleAddBtnClick} selectedStatus={selectedStatus} />
 
             <article>
               {/* TaskList Container */}

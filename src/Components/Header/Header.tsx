@@ -13,7 +13,7 @@ const taskStatus = ["Select Priority", "High", "Medium", "Low"];
 
 const initTask: Partial<Task> = { title: "" };
 
-export default function Header({ onAdd }: HeaderProps) {
+export default function Header({ onAdd, selectedStatus }: HeaderProps) {
   const [task, setTask] = useState<Partial<Task>>(initTask);
 
   const [showModal, setShowModal] = useState(false);
@@ -32,14 +32,10 @@ export default function Header({ onAdd }: HeaderProps) {
   }, []);
 
   function handleClick() {
-    // onAdd(task);
-    // setTask(initTask);
-    //open the modal
     setShowModal(true);
   }
 
   function onSave(newTask: Task) {
-    // call the add
     onAdd(newTask);
   }
 
@@ -59,11 +55,11 @@ export default function Header({ onAdd }: HeaderProps) {
         />
       ) : null}
       <article>
-        <h3>All Task</h3>
+        <h3>{selectedStatus} Tasks</h3>
       </article>
 
       <article className="header__task-actions">
-        <Input
+        {/* <Input
           value={task.title}
           type="text"
           name="title"
@@ -76,7 +72,7 @@ export default function Header({ onAdd }: HeaderProps) {
           name="priority"
           optionsList={taskStatus}
           onChange={handleChange}
-        />
+        /> */}
 
         <Button
           title="Add"
