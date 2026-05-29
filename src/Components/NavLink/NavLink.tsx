@@ -7,7 +7,7 @@ export default function NavLink({
   count,
   isActive,
   onClick,
-  dataStatus
+  dataStatus,
 }: NavLinkProps) {
   return (
     <button
@@ -18,7 +18,7 @@ export default function NavLink({
       {/* Left icon */}
       {LeftIcon}
       {title}
-      <div className="nav-link__count">{count}</div>
+      {count ?? <div className="nav-link__count">{count}</div>}
     </button>
   );
 }

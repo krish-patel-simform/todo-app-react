@@ -5,7 +5,6 @@ import type { Task } from "../../types/task.type";
 import {
   checkAllTaskForNotification,
   checkNotificationPermission,
-  deleteAllTask,
   getStoredTask,
   saveTask,
 } from "../../utils/dashboard.utils";
@@ -17,10 +16,11 @@ import Notification from "../../Components/Notification/Notification";
 
 type AllTaskListState = Task[];
 
-type AllTaskListAction = {
-  type: "insert" | "delete" | "edit" | "changeStatus" | "deleteAll";
-  payload?: unknown;
-};
+export type AllTaskListAction =
+  | { type: "insert"; payload: Task }
+  | { type: "delete"; payload: string }
+  | { type: "edit"; payload: Task }
+  | { type: "deleteAll" };
 
 function allTaskListReducer(
   prevState: AllTaskListState,
@@ -49,24 +49,7 @@ function allTaskListReducer(
       const id = action.payload;
       return prevState.filter((task) => task.id !== id);
     }
-    case "changeStatus": {
-      const currentTask = action.payload as Task;
-      const updatedTask: Task = {
-        ...currentTask,
-        status: currentTask.status === "Completed" ? "Pending" : "Completed",
-      };
-
-      const updateTaskIndex = prevState.findIndex(
-        (task) => task.id === currentTask.id,
-      );
-
-      const prefixArray = prevState.slice(0, updateTaskIndex);
-      const sufixArray = prevState.slice(updateTaskIndex + 1);
-
-      return [...prefixArray, updatedTask, ...sufixArray];
-    }
     case "deleteAll": {
-      deleteAllTask();
       return [];
     }
   }
@@ -75,7 +58,7 @@ function allTaskListReducer(
 export default function DashboardPage() {
   const [allTaskList, dispatchAllTaskList] = useReducer(
     allTaskListReducer,
-    [],
+    undefined,
     getStoredTask,
   );
   const [selectedStatus, setSelectedStatus] = useState<NavbarStatus>("All");
@@ -116,25 +99,8 @@ export default function DashboardPage() {
     setShowModal(true);
   }, []);
 
-  // delete the task
-  const memoDeleteTask = useCallback((id: string) => {
-    dispatchAllTaskList({ type: "delete", payload: id });
-  }, []);
-
-  const memoOnCheckboxChecked = useCallback((currentTask: Task) => {
-    dispatchAllTaskList({ type: "changeStatus", payload: currentTask });
-  }, []);
-
-  function handleAddBtnClick(task: Partial<Task>) {
-    dispatchAllTaskList({ type: "insert", payload: task });
-  }
-
   function handleCloseModal() {
     setShowModal(false);
-  }
-
-  function handleSaveEditedTask(editedTask: Task) {
-    dispatchAllTaskList({ type: "edit", payload: editedTask });
   }
 
   function handleDeleteAllTask() {
@@ -149,7 +115,7 @@ export default function DashboardPage() {
           header="Edit Task"
           defaultTask={task as Required<Task>}
           onClose={handleCloseModal}
-          onSave={handleSaveEditedTask}
+          dispatchAction={dispatchAllTaskList}
         />
       ) : null}
       <section className="dashboard__nav-container">
@@ -172,7 +138,10 @@ export default function DashboardPage() {
           <Notification allTask={allTaskList} />
         ) : (
           <>
-            <Header onAdd={handleAddBtnClick} selectedStatus={selectedStatus} />
+            <Header
+              selectedStatus={selectedStatus}
+              dispatchAction={dispatchAllTaskList}
+            />
 
             <article>
               {/* TaskList Container */}
@@ -180,9 +149,8 @@ export default function DashboardPage() {
                 <Card
                   task={taskData}
                   key={taskData.id}
-                  onChecked={memoOnCheckboxChecked}
-                  onDelete={memoDeleteTask}
                   onModalOpen={memoShowModal}
+                  dispatchAction={dispatchAllTaskList}
                 />
               ))}
             </article>

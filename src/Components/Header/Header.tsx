@@ -13,7 +13,10 @@ const taskStatus = ["Select Priority", "High", "Medium", "Low"];
 
 const initTask: Partial<Task> = { title: "" };
 
-export default function Header({ onAdd, selectedStatus }: HeaderProps) {
+export default function Header({
+  selectedStatus,
+  dispatchAction,
+}: HeaderProps) {
   const [task, setTask] = useState<Partial<Task>>(initTask);
 
   const [showModal, setShowModal] = useState(false);
@@ -31,14 +34,9 @@ export default function Header({ onAdd, selectedStatus }: HeaderProps) {
     return { flex: 1 };
   }, []);
 
-  function handleClick() {
+  function handleAddBtnClick() {
     setShowModal(true);
   }
-
-  function onSave(newTask: Task) {
-    onAdd(newTask);
-  }
-
   function onClose() {
     setShowModal(false);
   }
@@ -51,7 +49,8 @@ export default function Header({ onAdd, selectedStatus }: HeaderProps) {
           mode="New"
           header="Create New Task"
           onClose={onClose}
-          onSave={onSave}
+          // onSave={onSave}
+          dispatchAction={dispatchAction}
         />
       ) : null}
       <article>
@@ -77,7 +76,7 @@ export default function Header({ onAdd, selectedStatus }: HeaderProps) {
         <Button
           title="Add"
           leftIcon={<FaPlus />}
-          onClick={handleClick}
+          onClick={handleAddBtnClick}
           isPrimary={true}
         />
       </article>

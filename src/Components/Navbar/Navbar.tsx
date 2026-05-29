@@ -70,7 +70,6 @@ export default function Navbar({
           title="Notification"
           onClick={handleNavlinkClick}
           isActive={status === "Notification" ? true : false}
-          count={0}
           leftIcon={<IoMdNotificationsOutline />}
         />
       </section>

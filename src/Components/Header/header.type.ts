@@ -1,6 +1,7 @@
-import type { Task } from "../../types/task.type";
+import type { AllTaskListAction } from "../../pages/Dashboard/DashboardPage";
 
 export type HeaderProps = {
-  onAdd: (currentTask: Partial<Task>) => void;
+  // onAdd: (currentTask: Partial<Task>) => void;
   selectedStatus: string;
+  dispatchAction: React.Dispatch<AllTaskListAction>;
 };

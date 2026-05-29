@@ -4,8 +4,9 @@ import Input from "../Input/Input";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { memo, useMemo } from "react";
 import type { CardProps } from "./card.type";
+import type { Task } from "../../types/task.type";
 
-function Card({ task, onChecked, onDelete, onModalOpen }: CardProps & {}) {
+function Card({ task, onModalOpen, dispatchAction }: CardProps & {}) {
   const memoInputContainerStyle = useMemo(() => {
     return { border: "none" };
   }, []);
@@ -21,11 +22,19 @@ function Card({ task, onChecked, onDelete, onModalOpen }: CardProps & {}) {
   }
 
   function handleDeleteBtnClick() {
-    onDelete(task.id);
+    dispatchAction({ type: "deleteAll" });
   }
 
   function handleCheckboxChanged() {
-    onChecked(task);
+    const updatedTask: Task = {
+      ...task,
+      status: task.status == "Completed" ? "Pending" : "Completed",
+    };
+
+    // assume have an dispatch
+    dispatchAction({ type: "edit", payload: updatedTask });
+
+    // onChecked(task);
   }
 
   return (

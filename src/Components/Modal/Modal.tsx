@@ -12,27 +12,28 @@ import type {
 import "./modal.style.css";
 import { fillDefaultTaskProperty } from "../../utils/dashboard.utils";
 
+const priorityList: TaskPriority[] = ["High", "Medium", "Low"];
+
+const selectStyle = { width: "100%" };
+
+const categoryList: TaskCategory[] = [
+  "Work",
+  "Study",
+  "Shopping",
+  "Personal",
+  "Health",
+  "Others",
+];
+
+const statusList: TaskStatus[] = ["Completed", "Pending"];
+
 export default function Modal({
   header,
   defaultTask,
   onClose,
-  onSave,
   mode,
+  dispatchAction,
 }: ModalProps) {
-  const priorityList: TaskPriority[] = ["High", "Medium", "Low"];
-
-  const selectStyle = { width: "100%" };
-
-  const categoryList: TaskCategory[] = [
-    "Work",
-    "Study",
-    "Shopping",
-    "Personal",
-    "Health",
-    "Others",
-  ];
-
-  const statusList: TaskStatus[] = ["Completed", "Pending"];
   const today = new Date().toISOString().split("T")[0];
 
   //   * State
@@ -50,29 +51,35 @@ export default function Modal({
       return;
     }
     const deadline = new Date(deadLineDate.toString());
-    let newTask: Partial<Task> | Task = {
+    const commonTask = {
       title: title.toString(),
       priority: priority,
       category: category,
       deadline: deadline,
     };
-
+    let newTask: Task | null = null;
     if (mode === "Edit" && defaultTask) {
       const status = formData.get("status") as TaskStatus;
       newTask = {
-        ...newTask,
+        ...commonTask,
         date: defaultTask.date,
         status: status,
         id: defaultTask.id,
         isNotificationSentOnDueDate:
-          defaultTask?.deadline === deadline
+          defaultTask.deadline === deadline
             ? defaultTask.isNotificationSentOnDueDate
             : false,
       };
     } else if (mode === "New") {
-      newTask = { ...newTask, ...fillDefaultTaskProperty() };
+      newTask = { ...commonTask, ...fillDefaultTaskProperty() };
     }
-    onSave(newTask as Task);
+    // onSave(newTask as Task);
+    if (newTask !== null) {
+      dispatchAction({
+        type: mode === "Edit" ? "edit" : "insert",
+        payload: newTask,
+      });
+    }
     onClose();
   }
 
