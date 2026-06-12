@@ -46,8 +46,17 @@ export default function Modal({
 
     console.log(title, priority, category, deadLineDate);
 
-    if (!title || !priority || !category || !deadLineDate) {
-      alert("Please Fill all thing");
+    if (!title) {
+      alert("Please fill title");
+      return;
+    } else if (!priority) {
+      alert("Please fill priority");
+      return;
+    } else if (!category) {
+      alert("Please fill category");
+      return;
+    } else if (!deadLineDate) {
+      alert("Please fill deadline");
       return;
     }
     const deadline = new Date(deadLineDate.toString());
@@ -80,10 +89,6 @@ export default function Modal({
         payload: newTask,
       });
     }
-    onClose();
-  }
-
-  function handleCloseBtnClick() {
     onClose();
   }
 
@@ -161,7 +166,7 @@ export default function Modal({
               isPrimary={false}
               type="button"
               title="Cancel"
-              onClick={handleCloseBtnClick}
+              onClick={onClose}
             />
             <Button
               isPrimary={true}

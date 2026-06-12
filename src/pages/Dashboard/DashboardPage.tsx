@@ -31,7 +31,7 @@ function allTaskListReducer(
       console.log("btn clicked");
       const newTask = action.payload as Task;
       console.log(prevState);
-      const newTaskList = [...prevState, newTask];
+      const newTaskList = [newTask, ...prevState];
       return newTaskList;
     }
     case "edit": {
@@ -64,7 +64,7 @@ export default function DashboardPage() {
   const [selectedStatus, setSelectedStatus] = useState<NavbarStatus>("All");
 
   const [showModal, setShowModal] = useState(false);
-  const [task, setTask] = useState<Partial<Task>>({ title: "" });
+  const [task, setTask] = useState<Task | null>(null);
 
   const filterTaskList = useMemo(() => {
     switch (selectedStatus) {
@@ -101,6 +101,7 @@ export default function DashboardPage() {
 
   function handleCloseModal() {
     setShowModal(false);
+    setTask(null);
   }
 
   function handleDeleteAllTask() {
@@ -109,7 +110,7 @@ export default function DashboardPage() {
 
   return (
     <div className="dashboard-container">
-      {showModal ? (
+      {showModal && (
         <Modal
           mode="Edit"
           header="Edit Task"
@@ -117,7 +118,7 @@ export default function DashboardPage() {
           onClose={handleCloseModal}
           dispatchAction={dispatchAllTaskList}
         />
-      ) : null}
+      )}
       <section className="dashboard__nav-container">
         <Navbar
           onNavLinkClick={handleNavLinkChange}
