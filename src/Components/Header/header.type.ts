@@ -1,4 +1,4 @@
-import type { AllTaskListAction } from "../../pages/Dashboard/DashboardPage";
+import type { AllTaskListAction } from "../../reducer/alltaskListReducer";
 
 export type HeaderProps = {
   // onAdd: (currentTask: Partial<Task>) => void;

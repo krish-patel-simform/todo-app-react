@@ -1,11 +1,10 @@
 import Navbar from "../../Components/Navbar/Navbar";
 import "./dshboard.style.css";
-import { useCallback, useEffect, useMemo, useReducer, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import type { Task } from "../../types/task.type";
 import {
   checkAllTaskForNotification,
   checkNotificationPermission,
-  getStoredTask,
   saveTask,
 } from "../../utils/dashboard.utils";
 import Card from "../../Components/Card/Card";
@@ -13,54 +12,50 @@ import Header from "../../Components/Header/Header";
 import Modal from "../../Components/Modal/Modal";
 import type { NavbarStatus } from "../../Components/Navbar/navbar.type";
 import Notification from "../../Components/Notification/Notification";
+import { useAllTaskList } from "../../hook/useAllTaskList";
 
-type AllTaskListState = Task[];
+// function allTaskListReducer(
+//   prevState: AllTaskListState,
+//   action: AllTaskListAction,
+// ): AllTaskListState {
+//   switch (action.type) {
+//     case "insert": {
+//       console.log("btn clicked");
+//       const newTask = action.payload as Task;
+//       console.log(prevState);
+//       const newTaskList = [newTask, ...prevState];
+//       return newTaskList;
+//     }
+//     case "edit": {
+//       const editedTask = action.payload as Task;
+//       const updatedTaskIndex = prevState.findIndex(
+//         (task) => task.id === editedTask.id,
+//       );
 
-export type AllTaskListAction =
-  | { type: "insert"; payload: Task }
-  | { type: "delete"; payload: string }
-  | { type: "edit"; payload: Task }
-  | { type: "deleteAll" };
+//       const prefixArray = prevState.slice(0, updatedTaskIndex);
+//       const suffixArray = prevState.slice(updatedTaskIndex + 1);
 
-function allTaskListReducer(
-  prevState: AllTaskListState,
-  action: AllTaskListAction,
-): AllTaskListState {
-  switch (action.type) {
-    case "insert": {
-      console.log("btn clicked");
-      const newTask = action.payload as Task;
-      console.log(prevState);
-      const newTaskList = [newTask, ...prevState];
-      return newTaskList;
-    }
-    case "edit": {
-      const editedTask = action.payload as Task;
-      const updatedTaskIndex = prevState.findIndex(
-        (task) => task.id === editedTask.id,
-      );
-
-      const prefixArray = prevState.slice(0, updatedTaskIndex);
-      const suffixArray = prevState.slice(updatedTaskIndex + 1);
-
-      return [...prefixArray, editedTask, ...suffixArray];
-    }
-    case "delete": {
-      const id = action.payload;
-      return prevState.filter((task) => task.id !== id);
-    }
-    case "deleteAll": {
-      return [];
-    }
-  }
-}
+//       return [...prefixArray, editedTask, ...suffixArray];
+//     }
+//     case "delete": {
+//       const id = action.payload;
+//       return prevState.filter((task) => task.id !== id);
+//     }
+//     case "deleteAll": {
+//       return [];
+//     }
+//   }
+// }
 
 export default function DashboardPage() {
-  const [allTaskList, dispatchAllTaskList] = useReducer(
-    allTaskListReducer,
-    undefined,
-    getStoredTask,
-  );
+  // const [allTaskList, dispatchAllTaskList] = useReducer(
+  //   allTaskListReducer,
+  //   undefined,
+  //   getStoredTask,
+  // );
+
+  const { allTaskList, dispatchAllTaskList } = useAllTaskList();
+
   const [selectedStatus, setSelectedStatus] = useState<NavbarStatus>("All");
 
   const [showModal, setShowModal] = useState(false);

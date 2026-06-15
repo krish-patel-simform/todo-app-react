@@ -1,4 +1,4 @@
-import type { AllTaskListAction } from "../../pages/Dashboard/DashboardPage";
+import type { AllTaskListAction } from "../../reducer/alltaskListReducer";
 import type { Task } from "../../types/task.type";
 
 export type ModalProps = {

@@ -1,10 +1,13 @@
 import "./App.css";
 import DashboardPage from "./pages/Dashboard/DashboardPage";
+import AllTaskListProvider from "./Provider/AllTaskListProvider";
 
 function App() {
   return (
     <>
-      <DashboardPage />
+      <AllTaskListProvider>
+        <DashboardPage />
+      </AllTaskListProvider>
     </>
   );
 }
