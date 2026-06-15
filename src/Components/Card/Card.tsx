@@ -22,7 +22,7 @@ function Card({ task, onModalOpen, dispatchAction }: CardProps & {}) {
   }
 
   function handleDeleteBtnClick() {
-    dispatchAction({ type: "deleteAll" });
+    dispatchAction({ type: "delete", payload: task.id });
   }
 
   function handleCheckboxChanged() {
