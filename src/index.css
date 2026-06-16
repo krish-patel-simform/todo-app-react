@@ -1,33 +1,50 @@
-:root{
+:root {
   /* background colors */
-  --active-light-bg:#E7DDFD;
-  --active-dark-bg:#422677;
+  --active-bg: #e7ddfd;
+  --bg: #fff;
 
-  --active-light-text-color:#3616CB;
-  --active-dark-text-color:#fff;
+  --text-color: black;
 
-  --btn-color-primary:#7C6BF0;
-  --btn-color-secondary:#F1F2F4;
+  --active-text-color: #3616cb;
 
-  --primary-color:#806DF6;
+  --btn-color-primary: #7c6bf0;
+  --btn-color-secondary: #f1f2f4;
 
-  --color-orange:#F49538;
-  --color-green:rgb(56, 172, 56);
+  --primary-color: #806df6;
+
+  --color-orange: #f49538;
+  --color-green: rgb(56, 172, 56);
+
+  --notification-bg: #fef3f3;
 
   /* Units */
-  --rem-half:0.5rem;
-  --rem-020:0.2rem;
-  --rem-1:1rem;
-  --rem-2:2rem;
-  --rem-3:3rem;
+  --rem-half: 0.5rem;
+  --rem-020: 0.2rem;
+  --rem-1: 1rem;
+  --rem-2: 2rem;
+  --rem-3: 3rem;
 }
 
-*{
+.dark {
+  --active-bg: #422677;
+  --active-text-color: #fff;
+  --bg: #1a1f28;
+  --text-color: white;
+  --notification-bg: #4a2323;
+  --btn-color-secondary: #2c2f33;
+}
+
+* {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
 }
 
-#root{
+#root {
   height: 100vh;
+  background-color: var(--bg);
+  color: var(--text-color);
+  transition:
+    background-color 0.4s ease,
+    color 0.4s ease;
 }

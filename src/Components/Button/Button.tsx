@@ -16,7 +16,7 @@ export default function Button({
       {/* Left Icon */}
       {LeftIcon}
 
-      {title}
+      <p className="btn-p">{title}</p>
 
       {/* right Icon */}
       {RightIcon}

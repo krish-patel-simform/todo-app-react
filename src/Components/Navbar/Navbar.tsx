@@ -4,9 +4,11 @@ import { FaCheckSquare } from "react-icons/fa";
 import { CiCircleList } from "react-icons/ci";
 import { IoMdTime, IoMdNotificationsOutline } from "react-icons/io";
 import { MdDelete } from "react-icons/md";
+import { CgDarkMode } from "react-icons/cg";
 import Button from "../Button/Button";
 import { useMemo, type PointerEvent } from "react";
 import type { NavbarProps } from "./navbar.type";
+import { useTheme } from "../../hook/usetheme";
 
 export default function Navbar({
   onNavLinkClick,
@@ -16,6 +18,8 @@ export default function Navbar({
   pendingTaskCount,
   onDeleteAllTask,
 }: NavbarProps) {
+  const { theme, toggleTheme } = useTheme();
+
   const memoRemoveBtnStyle = useMemo(() => {
     return { background: "none", color: "red", fontSize: "1.2rem" };
   }, []);
@@ -75,6 +79,12 @@ export default function Navbar({
       </section>
 
       <section className="navbar__remmove-btn">
+        <Button
+          isPrimary={true}
+          title={theme}
+          onClick={toggleTheme}
+          leftIcon={<CgDarkMode />}
+        />
         <Button
           isPrimary={false}
           title="Clear All Tasks"
