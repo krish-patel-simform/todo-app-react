@@ -3,7 +3,7 @@ import "./notification.type";
 import NotificationCard from "../Card/NotificationCard";
 import { useState } from "react";
 import RequestNotification from "../Card/RequestNotification";
-import Button from "../Button/Button";
+import { Button } from "@/components/ui/Button/button";
 import {
   checkAllTaskForNotification,
   checkNotificationPermission,
@@ -57,11 +57,9 @@ export default function Notification({ allTask }: NotificationProps) {
         <>
           <section className="notification-header">
             <h3>Notification for today's deadline</h3>
-            <Button
-              title="Send Notification"
-              isPrimary={true}
-              onClick={handleSendNotification}
-            />
+            <Button variant="primary" onClick={handleSendNotification}>
+              <p>Send Notification</p>
+            </Button>
           </section>
 
           <section className="notification-due-task-list">

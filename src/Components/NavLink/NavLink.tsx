@@ -1,6 +1,6 @@
 import "./navlink.style.css";
 import type { NavLinkProps } from "./navlink.type";
-
+import { Button } from "@/components/ui/Button/button";
 export default function NavLink({
   title,
   leftIcon: LeftIcon,
@@ -10,8 +10,8 @@ export default function NavLink({
   dataStatus,
 }: NavLinkProps) {
   return (
-    <button
-      className={`nav-link ${isActive ? "active" : ""}`}
+    <Button
+      className={`font-normal nav-link ${isActive ? "active" : ""}`}
       onClick={onClick}
       data-status={dataStatus}
     >
@@ -21,6 +21,6 @@ export default function NavLink({
       {count !== undefined ? (
         <div className="nav-link__count">{count}</div>
       ) : null}
-    </button>
+    </Button>
   );
 }

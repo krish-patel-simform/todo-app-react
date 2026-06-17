@@ -1,7 +1,7 @@
 import { useMemo, useState, type ChangeEvent } from "react";
 import Input from "../Input/Input";
 import Select from "../Select/Select";
-import Button from "../Button/Button";
+import { Button } from "@/components/ui/Button/button";
 import { FaPlus } from "react-icons/fa";
 import type { Task } from "../../types/task.type";
 import type { HeaderProps } from "./header.type";
@@ -73,12 +73,10 @@ export default function Header({
           onChange={handleChange}
         />
 
-        <Button
-          title="Add"
-          leftIcon={<FaPlus />}
-          onClick={handleAddBtnClick}
-          isPrimary={true}
-        />
+        <Button variant="primary" onClick={handleAddBtnClick}>
+          <FaPlus />
+          <p>Add</p>
+        </Button>
       </article>
     </div>
   );

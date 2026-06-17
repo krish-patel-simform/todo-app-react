@@ -5,7 +5,7 @@ import { CiCircleList } from "react-icons/ci";
 import { IoMdTime, IoMdNotificationsOutline } from "react-icons/io";
 import { MdDelete } from "react-icons/md";
 import { CgDarkMode } from "react-icons/cg";
-import Button from "../Button/Button";
+import { Button } from "@/components/ui/Button/button";
 import { useMemo, type PointerEvent } from "react";
 import type { NavbarProps } from "./navbar.type";
 import { useTheme } from "../../hook/usetheme";
@@ -79,7 +79,7 @@ export default function Navbar({
       </section>
 
       <section className="navbar__remmove-btn">
-        <Button
+        {/* <Button
           isPrimary={true}
           title={theme}
           onClick={toggleTheme}
@@ -91,7 +91,21 @@ export default function Navbar({
           leftIcon={<MdDelete color="red" size={"1.2rem"} />}
           onClick={onDeleteAllTask}
           style={memoRemoveBtnStyle}
-        />
+        /> */}
+
+        <Button variant="primary" onClick={toggleTheme}>
+          <CgDarkMode />
+          <p>{theme}</p>
+        </Button>
+
+        <Button
+          variant="secondary"
+          onClick={onDeleteAllTask}
+          style={memoRemoveBtnStyle}
+        >
+          <MdDelete color="red" size={"1.2rem"} />
+          <p>Clear All Tasks</p>
+        </Button>
       </section>
     </div>
   );

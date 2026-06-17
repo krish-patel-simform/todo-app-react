@@ -1,4 +1,4 @@
-import Button from "../Button/Button";
+import { Button } from "@/components/ui/Button/button";
 import "./requestNotification.style.css";
 import { TiTick } from "react-icons/ti";
 import "./requestNotification.type";
@@ -20,8 +20,16 @@ export default function RequestNotification({
       </section>
 
       <section className="request-notification__actions">
-        <Button title="Sure" isPrimary={true} onClick={onSuccess} />
-        <Button title="No thanks!" isPrimary={false} onClick={onFail} />
+        {/* <Button title="Sure" isPrimary={true} onClick={onSuccess} />
+        <Button title="No thanks!" isPrimary={false} onClick={onFail} /> */}
+
+        <Button variant="primary" onClick={onSuccess}>
+          <p>Sure</p>
+        </Button>
+
+        <Button variant={"secondary"} onClick={onFail}>
+          <p>No thanks!</p>
+        </Button>
       </section>
     </div>
   );

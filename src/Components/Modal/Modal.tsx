@@ -1,5 +1,5 @@
 import type { ModalProps } from "./modal.type";
-import Button from "../Button/Button";
+import { Button } from "@/components/ui/Button/button";
 import Input from "../Input/Input";
 import { FaPlus, FaCalendar } from "react-icons/fa";
 import Select from "../Select/Select";
@@ -98,7 +98,10 @@ export default function Modal({
         <section className="modal__header">
           {/*header */}
           <h4>{header}</h4>
-          <Button isPrimary={false} title="X" onClick={onClose} />
+
+          <Button variant="secondary" onClick={onClose}>
+            <p>X</p>
+          </Button>
         </section>
         <hr />
         <form action={handleSubmit} className="modal__form-container">
@@ -162,7 +165,7 @@ export default function Modal({
             ) : null}
           </article>
           <article className="modal__actions">
-            <Button
+            {/* <Button
               isPrimary={false}
               type="button"
               title="Cancel"
@@ -173,7 +176,16 @@ export default function Modal({
               type="submit"
               title={header}
               leftIcon={<FaPlus />}
-            />
+            /> */}
+
+            <Button onClick={onClose} variant="secondary">
+              <p>Cancel</p>
+            </Button>
+
+            <Button variant="primary" type="submit">
+              <FaPlus />
+              <p>{header}</p>
+            </Button>
           </article>
         </form>
       </div>
