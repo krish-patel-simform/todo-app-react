@@ -36,13 +36,6 @@ function Card({ task, onModalOpen, dispatchAction }: CardProps & {}) {
   return (
     <div className="card-container">
       <section className="card__section">
-        {/* <InputField
-          type="checkbox"
-          style={memoInputStyle}
-          checked={task.status === "Completed" ? true : false}
-          onChange={handleCheckboxChanged}
-        /> */}
-
         <CheckboxField
           checked={task.status === "Completed" ? true : false}
           title={task.title}

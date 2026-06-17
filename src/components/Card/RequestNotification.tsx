@@ -20,9 +20,6 @@ export default function RequestNotification({
       </section>
 
       <section className="request-notification__actions">
-        {/* <Button title="Sure" isPrimary={true} onClick={onSuccess} />
-        <Button title="No thanks!" isPrimary={false} onClick={onFail} /> */}
-
         <Button variant="primary" onClick={onSuccess}>
           <p>Sure</p>
         </Button>

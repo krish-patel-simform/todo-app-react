@@ -61,15 +61,6 @@ export default function Header({
       </article>
 
       <article className="header__task-actions">
-        {/* <Input
-          value={task.title}
-          type="text"
-          name="title"
-          placeHolder="Add new task..."
-          onChange={handleChange}
-          containerStyle={memoInputContainerStyle}
-        /> */}
-
         <InputField
           label="Search Task"
           value={task.title}
@@ -78,12 +69,6 @@ export default function Header({
           placeHolder="Search for task"
           onChange={handleChange}
         />
-
-        {/* <Select
-          name="priority"
-          optionsList={taskStatus}
-          onChange={handleChange}
-        /> */}
 
         <DropDown
           label="Priority"
