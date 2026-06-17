@@ -1,4 +1,4 @@
-import Navbar from "../../Components/Navbar/Navbar";
+import Navbar from "../../components/Navbar/Navbar";
 import "./dshboard.style.css";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { Task } from "../../types/task.type";
@@ -7,11 +7,11 @@ import {
   checkNotificationPermission,
   saveTask,
 } from "../../utils/dashboard.utils";
-import Card from "../../Components/Card/Card";
-import Header from "../../Components/Header/Header";
-import Modal from "../../Components/Modal/Modal";
-import type { NavbarStatus } from "../../Components/Navbar/navbar.type";
-import Notification from "../../Components/Notification/Notification";
+import Card from "../../components/Card/Card";
+import Header from "../../components/Header/Header";
+import Modal from "../../components/Modal/Modal";
+import type { NavbarStatus } from "../../components/Navbar/navbar.type";
+import Notification from "../../components/Notification/Notification";
 import { useAllTaskList } from "../../hook/useAllTaskList";
 
 export default function DashboardPage() {

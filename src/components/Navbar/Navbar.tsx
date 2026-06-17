@@ -20,10 +20,6 @@ export default function Navbar({
 }: NavbarProps) {
   const { theme, toggleTheme } = useTheme();
 
-  const memoRemoveBtnStyle = useMemo(() => {
-    return { background: "none", color: "red", fontSize: "1.2rem" };
-  }, []);
-
   function handleNavlinkClick(e: PointerEvent<HTMLButtonElement>) {
     const target = e.target as HTMLElement;
     const newStatus = target.dataset.status;
@@ -79,29 +75,15 @@ export default function Navbar({
       </section>
 
       <section className="navbar__remmove-btn">
-        {/* <Button
-          isPrimary={true}
-          title={theme}
-          onClick={toggleTheme}
-          leftIcon={<CgDarkMode />}
-        />
-        <Button
-          isPrimary={false}
-          title="Clear All Tasks"
-          leftIcon={<MdDelete color="red" size={"1.2rem"} />}
-          onClick={onDeleteAllTask}
-          style={memoRemoveBtnStyle}
-        /> */}
-
         <Button variant="primary" onClick={toggleTheme}>
           <CgDarkMode />
           <p>{theme}</p>
         </Button>
 
         <Button
-          variant="secondary"
+          variant="outline"
           onClick={onDeleteAllTask}
-          style={memoRemoveBtnStyle}
+          className=" text-red-500 text-lg"
         >
           <MdDelete color="red" size={"1.2rem"} />
           <p>Clear All Tasks</p>
