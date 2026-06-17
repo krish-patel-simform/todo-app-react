@@ -5,7 +5,7 @@ import { CiCircleList } from "react-icons/ci";
 import { IoMdTime, IoMdNotificationsOutline } from "react-icons/io";
 import { MdDelete } from "react-icons/md";
 import { CgDarkMode } from "react-icons/cg";
-import { Button } from "@/components/ui/Button/button";
+import { Button } from "@/components/ui/button";
 import { useMemo, type PointerEvent } from "react";
 import type { NavbarProps } from "./navbar.type";
 import { useTheme } from "../../hook/usetheme";

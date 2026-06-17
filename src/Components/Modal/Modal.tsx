@@ -1,8 +1,6 @@
 import type { ModalProps } from "./modal.type";
-import { Button } from "@/components/ui/Button/button";
-import Input from "../Input/Input";
-import { FaPlus, FaCalendar } from "react-icons/fa";
-import Select from "../Select/Select";
+import { Button } from "@/components/ui/button";
+import { FaPlus } from "react-icons/fa";
 import type {
   Task,
   TaskCategory,
@@ -11,21 +9,29 @@ import type {
 } from "../../types/task.type";
 import "./modal.style.css";
 import { fillDefaultTaskProperty } from "../../utils/dashboard.utils";
+import { InputField } from "@/components/InputField/InputField";
+import { DropDown } from "@/components/DropDown/DropDown";
+import type { Option } from "@/components/DropDown/dropdown.type";
 
-const priorityList: TaskPriority[] = ["High", "Medium", "Low"];
-
-const selectStyle = { width: "100%" };
-
-const categoryList: TaskCategory[] = [
-  "Work",
-  "Study",
-  "Shopping",
-  "Personal",
-  "Health",
-  "Others",
+const priorityList: Option[] = [
+  { label: "High", value: "High" },
+  { label: "Medium", value: "Medium" },
+  { label: "Low", value: "Low" },
 ];
 
-const statusList: TaskStatus[] = ["Completed", "Pending"];
+const categoryList: Option[] = [
+  { label: "Work", value: "Work" },
+  { label: "Study", value: "Study" },
+  { label: "Shopping", value: "Shopping" },
+  { label: "Personal", value: "Personal" },
+  { label: "Health", value: "Health" },
+  { label: "Others", value: "Others" },
+];
+
+const statusList: Option[] = [
+  { value: "Completed", label: "Completed" },
+  { value: "Pending", label: "Pending" },
+];
 
 export default function Modal({
   header,
@@ -106,8 +112,8 @@ export default function Modal({
         <hr />
         <form action={handleSubmit} className="modal__form-container">
           <article>
-            <p>Task Title</p>
-            <Input
+            <InputField
+              label="Task Title"
               defaultValue={defaultTask?.title ?? ""}
               type="text"
               name="title"
@@ -118,18 +124,17 @@ export default function Modal({
 
           <article className="modal__selects">
             <div>
-              <p>Priority</p>
-              <Select
+              <DropDown
+                label="Priority"
+                className="w-full"
                 defaultValue={defaultTask?.priority ?? "High"}
                 name="priority"
-                optionsList={priorityList}
-                style={selectStyle}
+                options={priorityList}
               />
             </div>
             <div>
-              <p>Dead Line</p>
-              {/* date selecotr */}
-              <Input
+              <InputField
+                label="Dead Line"
                 type="date"
                 name="deadline"
                 defaultValue={
@@ -140,44 +145,30 @@ export default function Modal({
                 }}
                 min={today}
                 placeHolder="Select date"
-                leftIcon={<FaCalendar />}
               />
             </div>
             <div>
-              <p>Category</p>
-              <Select
+              <DropDown
                 name="category"
+                label="Category"
+                className="w-full"
                 defaultValue={defaultTask?.category ?? "Work"}
-                optionsList={categoryList}
-                style={selectStyle}
+                options={categoryList}
               />
             </div>
             {mode === "Edit" ? (
               <div>
-                <p>Status</p>
-                <Select
+                <DropDown
                   name="status"
+                  label="Status"
                   defaultValue={defaultTask?.status ?? "Pending"}
-                  optionsList={statusList}
-                  style={selectStyle}
+                  className="w-full"
+                  options={statusList}
                 />
               </div>
             ) : null}
           </article>
           <article className="modal__actions">
-            {/* <Button
-              isPrimary={false}
-              type="button"
-              title="Cancel"
-              onClick={onClose}
-            />
-            <Button
-              isPrimary={true}
-              type="submit"
-              title={header}
-              leftIcon={<FaPlus />}
-            /> */}
-
             <Button onClick={onClose} variant="secondary">
               <p>Cancel</p>
             </Button>

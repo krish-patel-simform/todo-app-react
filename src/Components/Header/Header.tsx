@@ -1,15 +1,21 @@
-import { useMemo, useState, type ChangeEvent } from "react";
-import Input from "../Input/Input";
-import Select from "../Select/Select";
-import { Button } from "@/components/ui/Button/button";
+import { useState, type ChangeEvent } from "react";
+import { Button } from "@/components/ui/button";
 import { FaPlus } from "react-icons/fa";
 import type { Task } from "../../types/task.type";
 import type { HeaderProps } from "./header.type";
 
 import "./header.style.css";
 import Modal from "../Modal/Modal";
+import { DropDown } from "@/components/DropDown/DropDown";
+import type { Option } from "@/components/DropDown/dropdown.type";
+import { InputField } from "@/components/InputField/InputField";
 
-const taskStatus = ["Select Priority", "High", "Medium", "Low"];
+const taskStatus: Option[] = [
+  { label: "Select Priority", value: "select priority" },
+  { label: "High", value: "High" },
+  { label: "Medium", value: "Medium" },
+  { label: "Low", value: "Low" },
+];
 
 const initTask: Partial<Task> = { title: "" };
 
@@ -30,9 +36,6 @@ export default function Header({
     }));
     console.log(task);
   }
-  const memoInputContainerStyle = useMemo(() => {
-    return { flex: 1 };
-  }, []);
 
   function handleAddBtnClick() {
     setShowModal(true);
@@ -58,18 +61,33 @@ export default function Header({
       </article>
 
       <article className="header__task-actions">
-        <Input
+        {/* <Input
           value={task.title}
           type="text"
           name="title"
           placeHolder="Add new task..."
           onChange={handleChange}
           containerStyle={memoInputContainerStyle}
+        /> */}
+
+        <InputField
+          label="Search Task"
+          value={task.title}
+          type="text"
+          name="title"
+          placeHolder="Search for task"
+          onChange={handleChange}
         />
 
-        <Select
+        {/* <Select
           name="priority"
           optionsList={taskStatus}
+          onChange={handleChange}
+        /> */}
+
+        <DropDown
+          label="Priority"
+          options={taskStatus}
           onChange={handleChange}
         />
 

@@ -1,15 +1,15 @@
 import "./card.style.css";
 import "./card.type";
-import Input from "../Input/Input";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { memo, useMemo } from "react";
 import type { CardProps } from "./card.type";
 import type { Task } from "../../types/task.type";
+import { InputField } from "@/components/InputField/InputField";
 
 function Card({ task, onModalOpen, dispatchAction }: CardProps & {}) {
-  const memoInputContainerStyle = useMemo(() => {
-    return { border: "none" };
-  }, []);
+  // const memoInputContainerStyle = useMemo(() => {
+  //   return { border: "none" };
+  // }, []);
 
   const memoInputStyle = useMemo(() => {
     return { accentColor: `var(--primary-color)` };
@@ -41,13 +41,21 @@ function Card({ task, onModalOpen, dispatchAction }: CardProps & {}) {
     <div className="card-container">
       <section className="card__section">
         {/* Checkbox */}
-        <Input
+        {/* <Input
           type="checkbox"
           containerStyle={memoInputContainerStyle}
           style={memoInputStyle}
           checked={task.status === "Completed" ? true : false}
           onChange={handleCheckboxChanged}
+        /> */}
+
+        <InputField
+          type="checkbox"
+          style={memoInputStyle}
+          checked={task.status === "Completed" ? true : false}
+          onChange={handleCheckboxChanged}
         />
+
         <p className="">{task.title}</p>
       </section>
 

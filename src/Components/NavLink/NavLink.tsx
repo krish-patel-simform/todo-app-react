@@ -1,6 +1,6 @@
 import "./navlink.style.css";
 import type { NavLinkProps } from "./navlink.type";
-import { Button } from "@/components/ui/Button/button";
+import { Button } from "@/components/ui/button";
 export default function NavLink({
   title,
   leftIcon: LeftIcon,

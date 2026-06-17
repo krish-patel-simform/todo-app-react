@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/Button/button";
+import { Button } from "@/components/ui/button";
 import "./requestNotification.style.css";
 import { TiTick } from "react-icons/ti";
 import "./requestNotification.type";

@@ -3,7 +3,7 @@ import "./notification.type";
 import NotificationCard from "../Card/NotificationCard";
 import { useState } from "react";
 import RequestNotification from "../Card/RequestNotification";
-import { Button } from "@/components/ui/Button/button";
+import { Button } from "@/components/ui/button";
 import {
   checkAllTaskForNotification,
   checkNotificationPermission,
