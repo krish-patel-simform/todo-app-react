@@ -1,21 +1,22 @@
 import Navbar from "../../components/Navbar/Navbar";
 import "./dshboard.style.css";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import type { Task } from "../../types/task.type";
-import {
-  checkAllTaskForNotification,
-  checkNotificationPermission,
-  saveTask,
-} from "../../utils/dashboard.utils";
 import Card from "../../components/Card/Card";
 import Header from "../../components/Header/Header";
 import Modal from "../../components/Modal/Modal";
 import type { NavbarStatus } from "../../components/Navbar/navbar.type";
-import Notification from "../../components/Notification/Notification";
-import { useAllTaskList } from "../../hook/useAllTaskList";
+import { useAppDispatch, useAppSelector } from "@/redux/store";
+import { deleteTodo } from "@/redux/feature/todo/todoAsync";
 
 export default function DashboardPage() {
-  const { allTaskList, dispatchAllTaskList } = useAllTaskList();
+  const {
+    error,
+    loading,
+    todos: allTaskList,
+  } = useAppSelector((store) => store.todo);
+
+  const dispatch = useAppDispatch();
 
   const [selectedStatus, setSelectedStatus] = useState<NavbarStatus>("All");
 
@@ -32,17 +33,6 @@ export default function DashboardPage() {
         return allTaskList;
     }
   }, [allTaskList, selectedStatus]);
-
-  useEffect(() => {
-    async function checkNotifyRequestAndSendNotification() {
-      const granted = await checkNotificationPermission();
-      if (!granted) return;
-      checkAllTaskForNotification(allTaskList);
-    }
-    checkNotifyRequestAndSendNotification();
-    console.log("task is saved");
-    saveTask(allTaskList);
-  }, [allTaskList]);
 
   function handleNavLinkChange(status: NavbarStatus) {
     setSelectedStatus(status);
@@ -61,7 +51,14 @@ export default function DashboardPage() {
   }
 
   function handleDeleteAllTask() {
-    dispatchAllTaskList({ type: "deleteAll" });
+    // dispatchAllTaskList({ type: "deleteAll" });
+    dispatch(deleteTodo(1));
+  }
+
+  if (loading) return <h6>Loading...</h6>;
+  else if (error) {
+    console.error("Error in the fetching all todos");
+    return <h6>{error}</h6>;
   }
 
   return (
@@ -91,28 +88,24 @@ export default function DashboardPage() {
       </section>
 
       <main className="dashboard__main-container">
-        {selectedStatus === "Notification" ? (
-          <Notification allTask={allTaskList} />
-        ) : (
-          <>
-            <Header
-              selectedStatus={selectedStatus}
-              dispatchAction={dispatchAllTaskList}
-            />
+        <>
+          <Header
+            selectedStatus={selectedStatus}
+            dispatchAction={dispatchAllTaskList}
+          />
 
-            <article>
-              {/* TaskList Container */}
-              {filterTaskList.map((taskData) => (
-                <Card
-                  task={taskData}
-                  key={taskData.id}
-                  onModalOpen={memoShowModal}
-                  dispatchAction={dispatchAllTaskList}
-                />
-              ))}
-            </article>
-          </>
-        )}
+          <article>
+            {/* TaskList Container */}
+            {filterTaskList.map((taskData) => (
+              <Card
+                task={taskData}
+                key={taskData.id}
+                onModalOpen={memoShowModal}
+                dispatchAction={dispatchAllTaskList}
+              />
+            ))}
+          </article>
+        </>
       </main>
     </div>
   );
