@@ -1,32 +1,14 @@
 import type { ModalProps } from "./modal.type";
 import { Button } from "@/components/ui/button";
 import { FaPlus } from "react-icons/fa";
-import type {
-  Task,
-  TaskCategory,
-  TaskPriority,
-  TaskStatus,
-} from "../../types/task.type";
+import type { Task } from "../../redux/feature/todo/todoSlice.type";
 import "./modal.style.css";
 import { fillDefaultTaskProperty } from "../../utils/dashboard.utils";
 import { InputField } from "@/components/InputField/InputField";
 import { DropDown } from "@/components/DropDown/DropDown";
 import type { Option } from "@/components/DropDown/dropdown.type";
-
-const priorityList: Option[] = [
-  { label: "High", value: "High" },
-  { label: "Medium", value: "Medium" },
-  { label: "Low", value: "Low" },
-];
-
-const categoryList: Option[] = [
-  { label: "Work", value: "Work" },
-  { label: "Study", value: "Study" },
-  { label: "Shopping", value: "Shopping" },
-  { label: "Personal", value: "Personal" },
-  { label: "Health", value: "Health" },
-  { label: "Others", value: "Others" },
-];
+import { useAppDispatch } from "@/redux/store";
+import { addTodoAg, updateTodoAg } from "@/redux/feature/todo/todoSlice";
 
 const statusList: Option[] = [
   { value: "Completed", label: "Completed" },
@@ -38,62 +20,39 @@ export default function Modal({
   defaultTask,
   onClose,
   mode,
-  dispatchAction,
 }: ModalProps) {
-  const today = new Date().toISOString().split("T")[0];
-
   //   * State
+
+  const dispatch = useAppDispatch();
 
   function handleSubmit(formData: FormData) {
     const title = formData.get("title");
-    const priority = formData.get("priority") as TaskPriority;
-    const category = formData.get("category") as TaskCategory;
-    const deadLineDate = formData.get("deadline");
 
-    console.log(title, priority, category, deadLineDate);
+    console.log(title);
 
     if (!title) {
       alert("Please fill title");
       return;
-    } else if (!priority) {
-      alert("Please fill priority");
-      return;
-    } else if (!category) {
-      alert("Please fill category");
-      return;
-    } else if (!deadLineDate) {
-      alert("Please fill deadline");
-      return;
     }
-    const deadline = new Date(deadLineDate.toString());
     const commonTask = {
-      title: title.toString(),
-      priority: priority,
-      category: category,
-      deadline: deadline,
+      todo: title.toString(),
+      userId: 123,
     };
     let newTask: Task | null = null;
     if (mode === "Edit" && defaultTask) {
-      const status = formData.get("status") as TaskStatus;
+      const completed = formData.get("status") === "Completed" ? true : false;
+
       newTask = {
         ...commonTask,
-        date: defaultTask.date,
-        status: status,
+        completed,
         id: defaultTask.id,
-        isNotificationSentOnDueDate:
-          defaultTask.deadline === deadline
-            ? defaultTask.isNotificationSentOnDueDate
-            : false,
       };
     } else if (mode === "New") {
       newTask = { ...commonTask, ...fillDefaultTaskProperty() };
     }
     // onSave(newTask as Task);
     if (newTask !== null) {
-      dispatchAction({
-        type: mode === "Edit" ? "edit" : "insert",
-        payload: newTask,
-      });
+      dispatch(mode === "Edit" ? updateTodoAg(newTask) : addTodoAg(newTask));
     }
     onClose();
   }
@@ -114,7 +73,7 @@ export default function Modal({
           <article>
             <InputField
               label="Task Title"
-              defaultValue={defaultTask?.title ?? ""}
+              defaultValue={defaultTask?.todo ?? ""}
               type="text"
               name="title"
               placeHolder="Enter task title"
@@ -123,45 +82,14 @@ export default function Modal({
           </article>
 
           <article className="modal__selects">
-            <div>
-              <DropDown
-                label="Priority"
-                className="w-full"
-                defaultValue={defaultTask?.priority ?? "High"}
-                name="priority"
-                options={priorityList}
-              />
-            </div>
-            <div>
-              <InputField
-                label="Dead Line"
-                type="date"
-                name="deadline"
-                defaultValue={
-                  defaultTask?.deadline?.toISOString().split("T")[0] ?? ""
-                }
-                onChange={(e) => {
-                  console.log(e.target.value);
-                }}
-                min={today}
-                placeHolder="Select date"
-              />
-            </div>
-            <div>
-              <DropDown
-                name="category"
-                label="Category"
-                className="w-full"
-                defaultValue={defaultTask?.category ?? "Work"}
-                options={categoryList}
-              />
-            </div>
             {mode === "Edit" ? (
               <div>
                 <DropDown
                   name="status"
                   label="Status"
-                  defaultValue={defaultTask?.status ?? "Pending"}
+                  defaultValue={
+                    defaultTask?.completed ? "Completed" : "Pending"
+                  }
                   className="w-full"
                   options={statusList}
                 />

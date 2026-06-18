@@ -3,13 +3,13 @@ import "./card.type";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { memo } from "react";
 import type { CardProps } from "./card.type";
-import type { Task } from "../../types/task.type";
 import { CheckboxField } from "../CheckboxField/CheckboxField";
+import type { Task } from "@/redux/feature/todo/todoSlice.type";
+import { useAppDispatch } from "@/redux/store";
+import { deleteTodoAg, updateTodoAg } from "@/redux/feature/todo/todoSlice";
 
-function Card({ task, onModalOpen, dispatchAction }: CardProps & {}) {
-  // const memoInputContainerStyle = useMemo(() => {
-  //   return { border: "none" };
-  // }, []);
+function Card({ task, onModalOpen }: CardProps & {}) {
+  const dispatch = useAppDispatch();
 
   console.log("Card is re render");
 
@@ -18,36 +18,32 @@ function Card({ task, onModalOpen, dispatchAction }: CardProps & {}) {
   }
 
   function handleDeleteBtnClick() {
-    dispatchAction({ type: "delete", payload: task.id });
+    dispatch(deleteTodoAg(task.id));
   }
 
   function handleCheckboxChanged() {
     const updatedTask: Task = {
       ...task,
-      status: task.status == "Completed" ? "Pending" : "Completed",
+      completed: !task.completed,
     };
-
-    // assume have an dispatch
-    dispatchAction({ type: "edit", payload: updatedTask });
-
-    // onChecked(task);
+    dispatch(updateTodoAg(updatedTask));
   }
 
   return (
     <div className="card-container">
       <section className="card__section">
         <CheckboxField
-          checked={task.status === "Completed" ? true : false}
-          title={task.title}
+          checked={task.completed ? true : false}
+          title={task.todo}
           onCheckedChange={handleCheckboxChanged}
         />
       </section>
 
       <section className="card__section">
         <p
-          className={`${task.status == "Completed" ? "card__actions__status-green" : "card__actions__status-orange"} `}
+          className={`${task.completed ? "card__actions__status-green" : "card__actions__status-orange"} `}
         >
-          {task.status}
+          {task.completed ? "Completed" : "Pending"}
         </p>
         <MdEdit color="blue" onClick={handleEditBtnClick} cursor={"pointer"} />
         <MdDelete

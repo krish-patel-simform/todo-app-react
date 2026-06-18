@@ -1,48 +1,48 @@
+import type { Task } from "@/redux/feature/todo/todoSlice.type";
 import { nanoid } from "nanoid";
-import type { Task, TaskStatus } from "../types/task.type";
 
-export const defaultdata: Task[] = [
-  {
-    id: "1",
-    title: "Complete Todo App",
-    status: "Completed",
-    priority: "Low",
-    date: new Date(),
-    category: "Work",
-    deadline: new Date(),
-    isNotificationSentOnDueDate: false,
-  },
-  {
-    id: "3",
-    title: "Complete Portfolio website",
-    status: "Pending",
-    priority: "Medium",
-    date: new Date(),
-    category: "Work",
-    deadline: new Date(),
-    isNotificationSentOnDueDate: false,
-  },
-  {
-    id: "4",
-    title: "Complete Color pallate",
-    status: "Completed",
-    priority: "High",
-    date: new Date(),
-    category: "Work",
-    deadline: new Date(),
-    isNotificationSentOnDueDate: false,
-  },
-  {
-    id: "5",
-    title: "Complete some other website",
-    status: "Pending",
-    priority: "High",
-    date: new Date(),
-    category: "Work",
-    deadline: new Date(),
-    isNotificationSentOnDueDate: false,
-  },
-];
+// export const defaultdata: Task[] = [
+//   {
+//     id: "1",
+//     title: "Complete Todo App",
+//     status: "Completed",
+//     priority: "Low",
+//     date: new Date(),
+//     category: "Work",
+//     deadline: new Date(),
+//     isNotificationSentOnDueDate: false,
+//   },
+//   {
+//     id: "3",
+//     title: "Complete Portfolio website",
+//     status: "Pending",
+//     priority: "Medium",
+//     date: new Date(),
+//     category: "Work",
+//     deadline: new Date(),
+//     isNotificationSentOnDueDate: false,
+//   },
+//   {
+//     id: "4",
+//     title: "Complete Color pallate",
+//     status: "Completed",
+//     priority: "High",
+//     date: new Date(),
+//     category: "Work",
+//     deadline: new Date(),
+//     isNotificationSentOnDueDate: false,
+//   },
+//   {
+//     id: "5",
+//     title: "Complete some other website",
+//     status: "Pending",
+//     priority: "High",
+//     date: new Date(),
+//     category: "Work",
+//     deadline: new Date(),
+//     isNotificationSentOnDueDate: false,
+//   },
+// ];
 
 export function getStoredTask() {
   const jsonData = JSON.parse(
@@ -60,10 +60,8 @@ export function getStoredTask() {
 
 export function fillDefaultTaskProperty() {
   return {
-    status: "Pending" as TaskStatus,
-    date: new Date(),
+    completed: false,
     id: nanoid(6),
-    isNotificationSentOnDueDate: false,
   };
 }
 
@@ -128,15 +126,15 @@ export async function checkNotificationPermission(): Promise<boolean> {
   }
 }
 
-export function isTodayIsDue(task: Task) {
-  const today = new Date();
-  const deadlineDate = task.deadline;
-  return (
-    today.getDate() === deadlineDate.getDate() &&
-    today.getMonth() === deadlineDate.getMonth() &&
-    today.getFullYear() === deadlineDate.getFullYear()
-  );
-}
+// export function isTodayIsDue(task: Task) {
+//   const today = new Date();
+//   const deadlineDate = task.deadline;
+//   return (
+//     today.getDate() === deadlineDate.getDate() &&
+//     today.getMonth() === deadlineDate.getMonth() &&
+//     today.getFullYear() === deadlineDate.getFullYear()
+//   );
+// }
 
 export function delay(ms: number) {
   return new Promise((resolve) => {
@@ -144,22 +142,22 @@ export function delay(ms: number) {
   });
 }
 
-export async function checkAllTaskForNotification(allTask: Task[]) {
-  for (const task of allTask) {
-    console.log(task);
-    console.log(isTodayIsDue(task));
-    if (isTodayIsDue(task) && !task.isNotificationSentOnDueDate) {
-      console.log("Notification send");
-      sendNotification(`Today is deadline for ${task.title}`, task.id);
-      updateTaskSentNotification(task);
-      // if (!notificationSent) break;
-      await delay(3000);
-    }
-  }
-  saveTask(allTask);
-}
+// export async function checkAllTaskForNotification(allTask: Task[]) {
+//   for (const task of allTask) {
+//     console.log(task);
+//     console.log(isTodayIsDue(task));
+//     if (isTodayIsDue(task) && !task.isNotificationSentOnDueDate) {
+//       console.log("Notification send");
+//       sendNotification(`Today is deadline for ${task.title}`, task.id);
+//       updateTaskSentNotification(task);
+//       // if (!notificationSent) break;
+//       await delay(3000);
+//     }
+//   }
+//   saveTask(allTask);
+// }
 
-function updateTaskSentNotification(task: Task) {
-  console.log("Update task's isNotificationOnDueDate is called");
-  task.isNotificationSentOnDueDate = true;
-}
+// function updateTaskSentNotification(task: Task) {
+//   console.log("Update task's isNotificationOnDueDate is called");
+//   task.isNotificationSentOnDueDate = true;
+// }

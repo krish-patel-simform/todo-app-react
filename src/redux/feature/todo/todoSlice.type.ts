@@ -11,7 +11,7 @@ export type TaskCategory =
   | "Others";
 
 export type Task = {
-  id: number;
+  id: number | string;
   todo: string;
   completed: boolean;
   userId: number;

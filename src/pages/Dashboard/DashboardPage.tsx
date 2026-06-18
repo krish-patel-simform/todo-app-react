@@ -1,13 +1,13 @@
 import Navbar from "../../components/Navbar/Navbar";
 import "./dshboard.style.css";
-import { useCallback, useMemo, useState } from "react";
-import type { Task } from "../../types/task.type";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Card from "../../components/Card/Card";
 import Header from "../../components/Header/Header";
 import Modal from "../../components/Modal/Modal";
 import type { NavbarStatus } from "../../components/Navbar/navbar.type";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
-import { deleteTodo } from "@/redux/feature/todo/todoAsync";
+import { fetchTodos } from "@/redux/feature/todo/todoAsync";
+import type { Task } from "@/redux/feature/todo/todoSlice.type";
 
 export default function DashboardPage() {
   const {
@@ -23,11 +23,16 @@ export default function DashboardPage() {
   const [showModal, setShowModal] = useState(false);
   const [task, setTask] = useState<Task | null>(null);
 
+  useEffect(() => {
+    dispatch(fetchTodos());
+  }, [dispatch]);
+
   const filterTaskList = useMemo(() => {
     switch (selectedStatus) {
       case "Completed":
+        return allTaskList.filter((task) => task.completed);
       case "Pending":
-        return allTaskList.filter((task) => task.status === selectedStatus);
+        return allTaskList.filter((task) => !task.completed);
 
       default:
         return allTaskList;
@@ -52,15 +57,15 @@ export default function DashboardPage() {
 
   function handleDeleteAllTask() {
     // dispatchAllTaskList({ type: "deleteAll" });
-    dispatch(deleteTodo(1));
   }
+
+  console.log("dashboard render");
 
   if (loading) return <h6>Loading...</h6>;
   else if (error) {
     console.error("Error in the fetching all todos");
     return <h6>{error}</h6>;
   }
-
   return (
     <div className="dashboard-container">
       {showModal && (
@@ -69,7 +74,6 @@ export default function DashboardPage() {
           header="Edit Task"
           defaultTask={task as Required<Task>}
           onClose={handleCloseModal}
-          dispatchAction={dispatchAllTaskList}
         />
       )}
       <section className="dashboard__nav-container">
@@ -77,10 +81,10 @@ export default function DashboardPage() {
           onNavLinkClick={handleNavLinkChange}
           status={selectedStatus}
           completedTaskCount={
-            allTaskList.filter((task) => task.status === "Completed").length
+            allTaskList.filter((task) => task.completed).length
           }
           pendingTaskCount={
-            allTaskList.filter((task) => task.status === "Pending").length
+            allTaskList.filter((task) => !task.completed).length
           }
           allTaskCount={allTaskList.length}
           onDeleteAllTask={handleDeleteAllTask}
@@ -89,19 +93,14 @@ export default function DashboardPage() {
 
       <main className="dashboard__main-container">
         <>
-          <Header
-            selectedStatus={selectedStatus}
-            dispatchAction={dispatchAllTaskList}
-          />
+          <Header selectedStatus={selectedStatus} />
 
-          <article>
-            {/* TaskList Container */}
+          <article className="dashboard__main-task-container">
             {filterTaskList.map((taskData) => (
               <Card
                 task={taskData}
                 key={taskData.id}
                 onModalOpen={memoShowModal}
-                dispatchAction={dispatchAllTaskList}
               />
             ))}
           </article>

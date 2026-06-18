@@ -1,7 +1,6 @@
 import { useState, type ChangeEvent } from "react";
 import { Button } from "@/components/ui/button";
 import { FaPlus } from "react-icons/fa";
-import type { Task } from "../../types/task.type";
 import type { HeaderProps } from "./header.type";
 
 import "./header.style.css";
@@ -9,6 +8,7 @@ import Modal from "../Modal/Modal";
 import { DropDown } from "@/components/DropDown/DropDown";
 import type { Option } from "@/components/DropDown/dropdown.type";
 import { InputField } from "@/components/InputField/InputField";
+import type { Task } from "@/redux/feature/todo/todoSlice.type";
 
 const taskStatus: Option[] = [
   { label: "Select Priority", value: "select priority" },
@@ -17,12 +17,9 @@ const taskStatus: Option[] = [
   { label: "Low", value: "Low" },
 ];
 
-const initTask: Partial<Task> = { title: "" };
+const initTask: Partial<Task> = { todo: "" };
 
-export default function Header({
-  selectedStatus,
-  dispatchAction,
-}: HeaderProps) {
+export default function Header({ selectedStatus }: HeaderProps) {
   const [task, setTask] = useState<Partial<Task>>(initTask);
 
   const [showModal, setShowModal] = useState(false);
@@ -53,7 +50,6 @@ export default function Header({
           header="Create New Task"
           onClose={onClose}
           // onSave={onSave}
-          dispatchAction={dispatchAction}
         />
       ) : null}
       <article>
@@ -63,7 +59,7 @@ export default function Header({
       <article className="header__task-actions">
         <InputField
           label="Search Task"
-          value={task.title}
+          value={task.todo}
           type="text"
           name="title"
           placeHolder="Search for task"

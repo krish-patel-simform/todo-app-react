@@ -1,5 +1,4 @@
-import type { AllTaskListAction } from "../../reducer/alltaskListReducer";
-import type { Task } from "../../types/task.type";
+import type { Task } from "@/redux/feature/todo/todoSlice.type";
 
 export type ModalProps = {
   header: string;
@@ -7,7 +6,6 @@ export type ModalProps = {
   onClose: () => void;
   defaultTask?: Task;
   mode: "New" | "Edit";
-  dispatchAction: React.Dispatch<AllTaskListAction>;
 };
 
 export type State = Partial<Task>;

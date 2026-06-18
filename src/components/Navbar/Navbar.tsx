@@ -2,7 +2,7 @@ import NavLink from "../NavLink/NavLink";
 import "./navbar.style.css";
 import { FaCheckSquare } from "react-icons/fa";
 import { CiCircleList } from "react-icons/ci";
-import { IoMdTime, IoMdNotificationsOutline } from "react-icons/io";
+import { IoMdTime } from "react-icons/io";
 import { MdDelete } from "react-icons/md";
 import { CgDarkMode } from "react-icons/cg";
 import { Button } from "@/components/ui/button";
@@ -64,13 +64,6 @@ export default function Navbar({
           count={pendingTaskCount}
           isActive={status === "Pending" ? true : false}
           onClick={handleNavlinkClick}
-        />
-        <NavLink
-          dataStatus="Notification"
-          title="Notification"
-          onClick={handleNavlinkClick}
-          isActive={status === "Notification" ? true : false}
-          leftIcon={<IoMdNotificationsOutline />}
         />
       </section>
 
