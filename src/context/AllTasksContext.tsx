@@ -1,14 +1,14 @@
-import { createContext, type Dispatch } from "react";
-import type {
-  AllTaskListAction,
-  AllTaskListState,
-} from "../reducer/alltaskListReducer";
+// import { createContext, type Dispatch } from "react";
+// import type {
+//   AllTaskListAction,
+//   AllTaskListState,
+// } from "../reducer/alltaskListReducer";
 
-type AllTaskListContexType = {
-  allTaskList: AllTaskListState;
-  dispatchAllTaskList: Dispatch<AllTaskListAction>;
-};
+// type AllTaskListContexType = {
+//   allTaskList: AllTaskListState;
+//   dispatchAllTaskList: Dispatch<AllTaskListAction>;
+// };
 
-const AllTaskListContext = createContext<AllTaskListContexType | null>(null);
+// const AllTaskListContext = createContext<AllTaskListContexType | null>(null);
 
-export default AllTaskListContext;
+// export default AllTaskListContext;
