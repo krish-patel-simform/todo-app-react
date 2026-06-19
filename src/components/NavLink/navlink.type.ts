@@ -1,5 +1,5 @@
+import type { TaskStatus } from "@/redux/feature/todo/todoSlice.type";
 import type { PointerEvent, ReactNode } from "react";
-import type { TaskStatus } from "../../types/task.type";
 
 export interface NavLinkProps {
   title: string;
