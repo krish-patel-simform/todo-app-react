@@ -53,7 +53,7 @@ export default function Navbar({ status, onNavLinkClick }: NavbarProps) {
           dataStatus="All"
           leftIcon={<CiCircleList size={"1.2rem"} />}
           count={todos.length}
-          isActive={status === "All" ? true : false}
+          isActive={status === "All"}
           onClick={handleNavlinkClick}
         />
         <NavLink
@@ -61,7 +61,7 @@ export default function Navbar({ status, onNavLinkClick }: NavbarProps) {
           dataStatus="Completed"
           leftIcon={<FaCheckSquare size={"1.2rem"} />}
           count={completedTaskCount}
-          isActive={status === "Completed" ? true : false}
+          isActive={status === "Completed"}
           onClick={handleNavlinkClick}
         />
         <NavLink
@@ -69,7 +69,7 @@ export default function Navbar({ status, onNavLinkClick }: NavbarProps) {
           title="Pending"
           leftIcon={<IoMdTime size={"1.2rem"} />}
           count={pendingTaskCount}
-          isActive={status === "Pending" ? true : false}
+          isActive={status === "Pending"}
           onClick={handleNavlinkClick}
         />
       </section>
