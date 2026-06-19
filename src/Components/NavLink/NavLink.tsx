@@ -18,9 +18,7 @@ export default function NavLink({
       {/* Left icon */}
       {LeftIcon}
       {title}
-      {count !== undefined ? (
-        <div className="nav-link__count">{count}</div>
-      ) : null}
+      {count ?? <div className="nav-link__count">{count}</div>}
     </button>
   );
 }
