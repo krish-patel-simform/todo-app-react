@@ -1,6 +1,6 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import type { Task } from "./todoSlice.type";
-import { fetchTodos } from "./todoAsync";
+import { addTodo, deleteTodo, fetchTodos } from "./todoAsync";
 
 type TodoState = {
   todos: Task[];
@@ -14,9 +14,9 @@ const initialState: TodoState = {
   error: undefined,
 };
 
-function addTodo(state: TodoState, action: PayloadAction<Task>) {
-  state.todos.unshift(action.payload);
-}
+// function addTodo(state: TodoState, action: PayloadAction<Task>) {
+//   state.todos.unshift(action.payload);
+// }
 
 function updateTodo(state: TodoState, action: PayloadAction<Task>) {
   const updatedTodo = action.payload;
@@ -28,17 +28,20 @@ function updateTodo(state: TodoState, action: PayloadAction<Task>) {
   }
 }
 
-function deleteTodo(state: TodoState, action: PayloadAction<number | string>) {
-  state.todos = state.todos.filter((todo) => todo.id !== action.payload);
+// function deleteTodo(state: TodoState, action: PayloadAction<number | string>) {
+//   state.todos = state.todos.filter((todo) => todo.id !== action.payload);
+// }
+
+function deleteAllTodo(state: TodoState) {
+  state.todos = [];
 }
 
 const todoSlice = createSlice({
   name: "todo",
   initialState,
   reducers: {
-    addTodoAg: addTodo,
+    deleteAllTodoAg: deleteAllTodo,
     updateTodoAg: updateTodo,
-    deleteTodoAg: deleteTodo,
   },
 
   extraReducers: (builder) => {
@@ -55,10 +58,36 @@ const todoSlice = createSlice({
       .addCase(fetchTodos.rejected, (state, action) => {
         state.error = action.error.message;
         state.loading = false;
+      })
+      .addCase(addTodo.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(addTodo.fulfilled, (state, action) => {
+        state.error = undefined;
+        state.loading = false;
+        state.todos.unshift(action.payload);
+      })
+      .addCase(addTodo.rejected, (state, action) => {
+        state.error = action.error.message;
+        state.loading = false;
+      })
+      .addCase(deleteTodo.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(deleteTodo.fulfilled, (state, action) => {
+        state.error = undefined;
+        state.loading = false;
+        state.todos = state.todos.filter(
+          (todo) => todo.id !== action.payload.id,
+        );
+      })
+      .addCase(deleteTodo.rejected, (state, action) => {
+        state.error = action.error.message;
+        state.loading = false;
       });
   },
 });
 
-export const { addTodoAg, updateTodoAg, deleteTodoAg } = todoSlice.actions;
+export const { deleteAllTodoAg, updateTodoAg } = todoSlice.actions;
 
 export default todoSlice.reducer;

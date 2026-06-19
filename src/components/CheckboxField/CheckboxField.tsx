@@ -13,7 +13,7 @@ export function CheckboxField({
   onCheckedChange,
 }: CheckboxField) {
   return (
-    <FieldGroup className="mx-auto w-72">
+    <FieldGroup className="w-full">
       <Field orientation="horizontal">
         <Checkbox
           id={`terms-checkbox-${title}`}

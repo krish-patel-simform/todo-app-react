@@ -8,7 +8,8 @@ import { InputField } from "@/components/InputField/InputField";
 import { DropDown } from "@/components/DropDown/DropDown";
 import type { Option } from "@/components/DropDown/dropdown.type";
 import { useAppDispatch } from "@/redux/store";
-import { addTodoAg, updateTodoAg } from "@/redux/feature/todo/todoSlice";
+import { addTodo } from "@/redux/feature/todo/todoAsync";
+import { updateTodoAg } from "@/redux/feature/todo/todoSlice";
 
 const statusList: Option[] = [
   { value: "Completed", label: "Completed" },
@@ -36,7 +37,6 @@ export default function Modal({
     }
     const commonTask = {
       todo: title.toString(),
-      userId: 123,
     };
     let newTask: Task | null = null;
     if (mode === "Edit" && defaultTask) {
@@ -46,13 +46,14 @@ export default function Modal({
         ...commonTask,
         completed,
         id: defaultTask.id,
+        userId: defaultTask.userId,
       };
     } else if (mode === "New") {
       newTask = { ...commonTask, ...fillDefaultTaskProperty() };
     }
     // onSave(newTask as Task);
     if (newTask !== null) {
-      dispatch(mode === "Edit" ? updateTodoAg(newTask) : addTodoAg(newTask));
+      dispatch(mode === "Edit" ? updateTodoAg(newTask) : addTodo(newTask));
     }
     onClose();
   }

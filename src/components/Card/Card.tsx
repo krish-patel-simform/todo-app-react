@@ -6,7 +6,8 @@ import type { CardProps } from "./card.type";
 import { CheckboxField } from "../CheckboxField/CheckboxField";
 import type { Task } from "@/redux/feature/todo/todoSlice.type";
 import { useAppDispatch } from "@/redux/store";
-import { deleteTodoAg, updateTodoAg } from "@/redux/feature/todo/todoSlice";
+import { deleteTodo } from "@/redux/feature/todo/todoAsync";
+import { updateTodoAg } from "@/redux/feature/todo/todoSlice";
 
 function Card({ task, onModalOpen }: CardProps & {}) {
   const dispatch = useAppDispatch();
@@ -18,7 +19,11 @@ function Card({ task, onModalOpen }: CardProps & {}) {
   }
 
   function handleDeleteBtnClick() {
-    dispatch(deleteTodoAg(task.id));
+    if (task.id) {
+      dispatch(deleteTodo(task.id));
+    } else {
+      console.error("for delte task we did not get the id");
+    }
   }
 
   function handleCheckboxChanged() {
@@ -31,7 +36,7 @@ function Card({ task, onModalOpen }: CardProps & {}) {
 
   return (
     <div className="card-container">
-      <section className="card__section">
+      <section className="card__section card__section-title">
         <CheckboxField
           checked={task.completed ? true : false}
           title={task.todo}

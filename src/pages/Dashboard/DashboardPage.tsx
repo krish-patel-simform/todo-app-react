@@ -10,6 +10,8 @@ import { fetchTodos } from "@/redux/feature/todo/todoAsync";
 import type { Task } from "@/redux/feature/todo/todoSlice.type";
 
 export default function DashboardPage() {
+  const [selectedStatus, setSelectedStatus] = useState<NavbarStatus>("All");
+
   const {
     error,
     loading,
@@ -17,8 +19,6 @@ export default function DashboardPage() {
   } = useAppSelector((store) => store.todo);
 
   const dispatch = useAppDispatch();
-
-  const [selectedStatus, setSelectedStatus] = useState<NavbarStatus>("All");
 
   const [showModal, setShowModal] = useState(false);
   const [task, setTask] = useState<Task | null>(null);
@@ -42,7 +42,6 @@ export default function DashboardPage() {
   function handleNavLinkChange(status: NavbarStatus) {
     setSelectedStatus(status);
   }
-
   // edit the task show modal
   const memoShowModal = useCallback((currentTask: Task) => {
     console.log(currentTask);
@@ -55,17 +54,8 @@ export default function DashboardPage() {
     setTask(null);
   }
 
-  function handleDeleteAllTask() {
-    // dispatchAllTaskList({ type: "deleteAll" });
-  }
-
   console.log("dashboard render");
 
-  if (loading) return <h6>Loading...</h6>;
-  else if (error) {
-    console.error("Error in the fetching all todos");
-    return <h6>{error}</h6>;
-  }
   return (
     <div className="dashboard-container">
       {showModal && (
@@ -77,18 +67,7 @@ export default function DashboardPage() {
         />
       )}
       <section className="dashboard__nav-container">
-        <Navbar
-          onNavLinkClick={handleNavLinkChange}
-          status={selectedStatus}
-          completedTaskCount={
-            allTaskList.filter((task) => task.completed).length
-          }
-          pendingTaskCount={
-            allTaskList.filter((task) => !task.completed).length
-          }
-          allTaskCount={allTaskList.length}
-          onDeleteAllTask={handleDeleteAllTask}
-        />
+        <Navbar status={selectedStatus} onNavLinkClick={handleNavLinkChange} />
       </section>
 
       <main className="dashboard__main-container">
@@ -96,13 +75,19 @@ export default function DashboardPage() {
           <Header selectedStatus={selectedStatus} />
 
           <article className="dashboard__main-task-container">
-            {filterTaskList.map((taskData) => (
-              <Card
-                task={taskData}
-                key={taskData.id}
-                onModalOpen={memoShowModal}
-              />
-            ))}
+            {loading ? (
+              <h6>Loading...</h6>
+            ) : error ? (
+              <h6>{error}</h6>
+            ) : (
+              filterTaskList.map((taskData) => (
+                <Card
+                  task={taskData}
+                  key={taskData.id}
+                  onModalOpen={memoShowModal}
+                />
+              ))
+            )}
           </article>
         </>
       </main>

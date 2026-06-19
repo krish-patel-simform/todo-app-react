@@ -20,4 +20,7 @@
 .dashboard__main-task-container {
   overflow-y: auto;
   scrollbar-width: thin;
+  display: flex;
+  flex-direction: column;
+  gap: var(--rem-half);
 }

@@ -1,5 +1,4 @@
 import type { Task } from "@/redux/feature/todo/todoSlice.type";
-import { nanoid } from "nanoid";
 
 // export const defaultdata: Task[] = [
 //   {
@@ -61,7 +60,7 @@ export function getStoredTask() {
 export function fillDefaultTaskProperty() {
   return {
     completed: false,
-    id: nanoid(6),
+    userId: 5,
   };
 }
 

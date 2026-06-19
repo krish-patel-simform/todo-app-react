@@ -7,22 +7,24 @@ import { MdDelete } from "react-icons/md";
 import { CgDarkMode } from "react-icons/cg";
 import { Button } from "@/components/ui/button";
 import { type PointerEvent } from "react";
-import type { NavbarProps } from "./navbar.type";
+import type { NavbarProps, NavbarStatus } from "./navbar.type";
 import { useTheme } from "../../hook/usetheme";
+import { useAppDispatch, useAppSelector } from "@/redux/store";
+import { deleteAllTodoAg } from "@/redux/feature/todo/todoSlice";
 
-export default function Navbar({
-  onNavLinkClick,
-  status,
-  allTaskCount,
-  completedTaskCount,
-  pendingTaskCount,
-  onDeleteAllTask,
-}: NavbarProps) {
+export default function Navbar({ status, onNavLinkClick }: NavbarProps) {
   const { theme, toggleTheme } = useTheme();
+
+  const todos = useAppSelector((store) => store.todo.todos);
+  const dispatch = useAppDispatch();
+
+  const completedTaskCount = todos.filter((todo) => todo.completed).length;
+
+  const pendingTaskCount = todos.filter((todo) => !todo.completed).length;
 
   function handleNavlinkClick(e: PointerEvent<HTMLButtonElement>) {
     const target = e.target as HTMLElement;
-    const newStatus = target.dataset.status;
+    const newStatus = target.dataset.status as NavbarStatus;
     if (
       newStatus === "All" ||
       newStatus === "Pending" ||
@@ -31,6 +33,11 @@ export default function Navbar({
     )
       onNavLinkClick(newStatus);
   }
+
+  function handleDeleteAllTask() {
+    dispatch(deleteAllTodoAg());
+  }
+
   return (
     <div className="navbar-container">
       {/* Header */}
@@ -45,7 +52,7 @@ export default function Navbar({
           title="All task"
           dataStatus="All"
           leftIcon={<CiCircleList size={"1.2rem"} />}
-          count={allTaskCount}
+          count={todos.length}
           isActive={status === "All" ? true : false}
           onClick={handleNavlinkClick}
         />
@@ -75,7 +82,7 @@ export default function Navbar({
 
         <Button
           variant="outline"
-          onClick={onDeleteAllTask}
+          onClick={handleDeleteAllTask}
           className=" text-red-500 text-lg"
         >
           <MdDelete color="red" size={"1.2rem"} />

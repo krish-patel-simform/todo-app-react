@@ -11,10 +11,10 @@ export type TaskCategory =
   | "Others";
 
 export type Task = {
-  id: number | string;
+  id?: number;
   todo: string;
   completed: boolean;
-  userId: number;
+  userId: number | string;
   //   status: TaskStatus;
   //   priority: TaskPriority;
   //   date: Date;
