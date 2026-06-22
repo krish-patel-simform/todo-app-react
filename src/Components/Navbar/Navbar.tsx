@@ -46,7 +46,7 @@ export default function Navbar({
           dataStatus="All"
           leftIcon={<CiCircleList size={"1.2rem"} />}
           count={allTaskCount}
-          isActive={status === "All" ? true : false}
+          isActive={status === "All"}
           onClick={handleNavlinkClick}
         />
         <NavLink
@@ -54,7 +54,7 @@ export default function Navbar({
           dataStatus="Completed"
           leftIcon={<FaCheckSquare size={"1.2rem"} />}
           count={completedTaskCount}
-          isActive={status === "Completed" ? true : false}
+          isActive={status === "Completed"}
           onClick={handleNavlinkClick}
         />
         <NavLink
@@ -62,14 +62,14 @@ export default function Navbar({
           title="Pending"
           leftIcon={<IoMdTime size={"1.2rem"} />}
           count={pendingTaskCount}
-          isActive={status === "Pending" ? true : false}
+          isActive={status === "Pending"}
           onClick={handleNavlinkClick}
         />
         <NavLink
           dataStatus="Notification"
           title="Notification"
           onClick={handleNavlinkClick}
-          isActive={status === "Notification" ? true : false}
+          isActive={status === "Notification"}
           leftIcon={<IoMdNotificationsOutline />}
         />
       </section>
