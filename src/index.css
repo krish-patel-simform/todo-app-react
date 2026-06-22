@@ -1,0 +1,33 @@
+:root{
+  /* background colors */
+  --active-light-bg:#E7DDFD;
+  --active-dark-bg:#422677;
+
+  --active-light-text-color:#3616CB;
+  --active-dark-text-color:#fff;
+
+  --btn-color-primary:#7C6BF0;
+  --btn-color-secondary:#F1F2F4;
+
+  --primary-color:#806DF6;
+
+  --color-orange:#F49538;
+  --color-green:rgb(56, 172, 56);
+
+  /* Units */
+  --rem-half:0.5rem;
+  --rem-020:0.2rem;
+  --rem-1:1rem;
+  --rem-2:2rem;
+  --rem-3:3rem;
+}
+
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+#root{
+  height: 100vh;
+}

@@ -1,0 +1,32 @@
+.notification-card-container{
+    display: flex;
+    gap: var(--rem-1);
+    border: 1px solid #d79999;
+    background-color: #FEF3F3;
+    border-radius: 5px;
+    padding: var(--rem-1);
+}
+
+.notification-card__icon{
+    height: 35px;
+    aspect-ratio: 1/1;
+    
+    & > svg{
+        height: 100%;
+        width: 100%;
+        color: #FB1416;
+    }
+}
+
+.deadline-notification{
+    background-color: #d79999;
+    color: black;
+}
+
+.notification-content{
+    flex:1,
+}
+
+.notification-content__header{
+    font-weight: 600;
+}

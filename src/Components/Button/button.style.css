@@ -1,0 +1,19 @@
+.btn{
+    border: none;
+    border-radius: 5px;
+    padding: var(--rem-half);
+    display: flex;
+    align-items: center;
+    color: #fff;
+    gap: var(--rem-020);
+    cursor: pointer;
+}
+
+.btn-primary{
+    background-color: var(--btn-color-primary);
+}
+
+.btn-secondary{
+    background-color: var(--btn-color-secondary);
+    color: black;
+}

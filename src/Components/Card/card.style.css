@@ -1,0 +1,29 @@
+.card-container{
+    display: flex;
+    justify-content: space-between;
+    padding: var(--rem-half);
+    border-radius: 5px;
+    border: 1px solid gray;
+}
+
+.card__section{
+    display: flex;
+    gap: var(--rem-1);
+    align-items: center;
+}
+
+.card__title-stroke{
+    text-decoration: line-through;
+}
+
+.card__actions{
+    display: flex;
+}
+
+.card__actions__status-green{
+    color: var(--color-green);
+}
+
+.card__actions__status-orange{
+    color: var(--color-orange);
+}

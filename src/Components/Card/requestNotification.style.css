@@ -1,0 +1,35 @@
+.request-notification-container{
+    display: flex;
+    gap: var(--rem-1);
+    /* background-color: #C5F6D4; */
+    background-color: var(--active-light-bg);;
+    border-radius: 5px;
+    align-items: center;
+    padding: var(--rem-1);
+    color: red;
+    /* color: var(--active-light-text-color); */
+}
+
+.request-notification__icon{
+    
+    font-size: var(--rem-2);
+}
+
+.request-notification__content{
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.request-notification__content-header{
+    font-weight: 600;
+    font-size: var(--rem-2);
+    /* color: var(--active-light-text-color); */
+}
+
+.request-notification__actions{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--rem-1);
+}

@@ -1,0 +1,17 @@
+.dashboard-container{
+    display: flex;
+    /* flex-direction: column; */
+    height: 100%;
+    padding: var(--rem-1);
+}
+.dashboard__nav-container{
+    max-width: 50rem;
+    padding: var(--rem-half);
+}
+.dashboard__main-container{
+    flex: 1;
+    padding: var(--rem-2);
+    display: flex;
+    flex-direction: column;
+    gap: var(--rem-2);
+}
