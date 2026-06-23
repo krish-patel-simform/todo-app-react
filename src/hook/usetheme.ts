@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type Theme = "Light" | "Dark";
 export function useTheme() {
@@ -10,10 +10,12 @@ export function useTheme() {
   });
   function toggleTheme() {
     document.body.classList.toggle("dark");
-    const newTheme: Theme = theme === "Dark" ? "Light" : "Dark";
-    setTheme(newTheme);
-    localStorage.setItem("theme", newTheme);
+    setTheme((prev) => (prev === "Dark" ? "Light" : "Dark"));
   }
+
+  useEffect(() => {
+    localStorage.setItem("theme", theme);
+  }, [theme]);
 
   return { theme, toggleTheme };
 }
