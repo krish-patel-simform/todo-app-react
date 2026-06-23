@@ -3,7 +3,10 @@ import { useState } from "react";
 type Theme = "Light" | "Dark";
 export function useTheme() {
   const [theme, setTheme] = useState<Theme>(() => {
-    return (localStorage.getItem("theme") as Theme) || "Light";
+    const theme = (localStorage.getItem("theme") as Theme) || "Light";
+    if (theme === "Dark") document.body.classList.add("dark");
+
+    return theme;
   });
   function toggleTheme() {
     document.body.classList.toggle("dark");
