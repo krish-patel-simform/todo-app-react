@@ -1,0 +1,13 @@
+.select-container {
+  border-radius: 5px;
+  /* width: 100%; */
+}
+
+.select {
+  padding: var(--rem-half);
+  background-color: var(--bg);
+  color: var(--text-color);
+  transition:
+    background-color 0.4s ease,
+    color 0.4s ease;
+}

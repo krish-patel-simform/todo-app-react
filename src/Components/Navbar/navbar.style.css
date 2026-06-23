@@ -1,0 +1,32 @@
+.navbar-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: var(--rem-1);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: var(--rem-020);
+  padding-top: var(--rem-1);
+  justify-content: center;
+}
+
+.header__heading {
+  font-weight: 600;
+  font-size: 1.5rem;
+}
+
+.nav-link-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: var(--rem-half);
+}
+.navbar__remmove-btn {
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center;
+  align-items: center; */
+}

@@ -1,0 +1,22 @@
+.input-container {
+  display: flex;
+  gap: var(--rem-half);
+  align-items: center;
+  border: 1px solid grey;
+  padding: var(--rem-020);
+  border-radius: 5px;
+}
+.input {
+  flex: 1;
+  outline: none;
+  border: none;
+  font-size: var(--rem-1);
+  background-color: var(--bg);
+  color: var(--text-color);
+  transition:
+    background-color 0.4s ease,
+    color 0.4s ease;
+}
+.input-container:focus-within {
+  border: 1px solid var(--primary-color);
+}
